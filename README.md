@@ -78,6 +78,24 @@ implements gradient descent and backpropagation longhand in NumPy — the same
 four equations the Backpropagation lesson derives — and the frontend just
 visualizes the returned trajectories, loss curves, and decision boundaries.
 
+## Testing
+
+```bash
+# Backend: unit + API tests (self-contained — spins up its own SQLite DB)
+cd backend && .venv/bin/python -m pytest
+
+# Frontend: end-to-end tests (needs the full stack running, see above)
+cd frontend && npm run test:e2e
+```
+
+The backend suite covers the math as math: backprop gradients are checked
+against central finite differences, gradient descent is verified to converge
+below the analytic stability threshold (η < 2/λmax) and diverge above it, and
+the gradient-flow endpoint must reproduce the vanishing-gradient effect. The
+Playwright suite drives the real browser through login → create → render
+(KaTeX included) → edit → delete → logout, and asserts the session cookie is
+httpOnly. CI runs pytest and the frontend build on every push.
+
 ## API sketch
 
 ```
