@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: mathnotes-db
+    environment:
+      POSTGRES_USER: mathnotes
+      POSTGRES_PASSWORD: mathnotes
+      POSTGRES_DB: mathnotes
+    ports:
+      # Host port 5433 because a system Postgres already occupies 5432.
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mathnotes"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
