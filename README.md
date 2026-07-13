@@ -78,6 +78,24 @@ implements gradient descent and backpropagation longhand in NumPy — the same
 four equations the Backpropagation lesson derives — and the frontend just
 visualizes the returned trajectories, loss curves, and decision boundaries.
 
+## Deployment
+
+Live at **https://mathnotes-drakejay-drakejays-projects.vercel.app** —
+frontend on Vercel (free tier), backend + Postgres on Railway.
+
+- **Backend (Railway):** built from `backend/Dockerfile`
+  (`backend/railway.json` sets the health check). Redeploy with
+  `cd backend && railway up --service backend`. Env vars live in the Railway
+  dashboard (backend service → Variables): `DATABASE_URL` (a reference to the
+  Postgres service), `ADMIN_PASSWORD`, `COOKIE_SECURE=true`. Migrations and
+  seeding run automatically at startup.
+- **Frontend (Vercel):** redeploy with `cd frontend && vercel --prod`.
+  `NEXT_PUBLIC_API_URL` and `API_PROXY_URL` (production env vars) point at the
+  Railway backend; the `/api/*` rewrite keeps the session cookie first-party
+  on the Vercel origin.
+- The Playwright suite can verify production:
+  `E2E_BASE_URL=<site> ADMIN_PASSWORD=<pw> npm run test:e2e`.
+
 ## Database migrations
 
 The schema is managed by Alembic (`backend/alembic/`), and migrations run
