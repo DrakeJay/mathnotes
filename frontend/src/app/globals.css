@@ -1,0 +1,69 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  /* Page & ink (dataviz reference palette: chart chrome) */
+  --background: #f9f9f7;
+  --foreground: #0b0b0b;
+  --surface-card: #fcfcfb;
+  --ink-secondary: #52514e;
+  --ink-muted: #898781;
+  --hairline: rgba(11, 11, 11, 0.1);
+
+  /* Viz tokens */
+  --viz-surface: #fcfcfb;
+  --viz-grid: #e1e0d9;
+  --viz-axis: #c3c2b7;
+  --series-blue: #2a78d6;
+  --series-aqua: #1baf7a;
+  --series-yellow: #eda100;
+  --series-red: #e34948;
+  --series-violet: #4a3aa7;
+  --status-critical: #d03b3b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0d0d0d;
+    --foreground: #ffffff;
+    --surface-card: #1a1a19;
+    --ink-secondary: #c3c2b7;
+    --ink-muted: #898781;
+    --hairline: rgba(255, 255, 255, 0.1);
+
+    --viz-surface: #1a1a19;
+    --viz-grid: #2c2c2a;
+    --viz-axis: #383835;
+    --series-blue: #3987e5;
+    --series-aqua: #199e70;
+    --series-yellow: #c98500;
+    --series-red: #e66767;
+    --series-violet: #9085e9;
+    --status-critical: #d03b3b;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--surface-card);
+  --color-ink-2: var(--ink-secondary);
+  --color-ink-3: var(--ink-muted);
+  --color-hairline: var(--hairline);
+  --color-accent: var(--series-blue);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Block equations can be wider than the article column on small screens. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
