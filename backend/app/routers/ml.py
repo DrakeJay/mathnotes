@@ -200,6 +200,52 @@ def sigmoid(z: np.ndarray) -> np.ndarray:
     return 1 / (1 + np.exp(-np.clip(z, -30, 30)))
 
 
+def mlp_init(sizes: list[int], activation: str, rng: np.random.Generator):
+    """He initialization for ReLU, Xavier for the rest."""
+    gain = 2.0 if activation == "relu" else 1.0
+    W = [
+        rng.normal(0, np.sqrt(gain / sizes[i]), (sizes[i], sizes[i + 1]))
+        for i in range(len(sizes) - 1)
+    ]
+    b = [np.zeros((1, sizes[i + 1])) for i in range(len(sizes) - 1)]
+    return W, b
+
+
+def mlp_forward(W, b, X: np.ndarray, act):
+    """Forward pass, caching every pre-activation z and activation a
+    because backprop needs them. Hidden layers use `act`, output sigmoid."""
+    activations, zs = [X], []
+    a = X
+    for layer in range(len(W)):
+        z = a @ W[layer] + b[layer]
+        zs.append(z)
+        a = sigmoid(z) if layer == len(W) - 1 else act(z)
+        activations.append(a)
+    return activations, zs
+
+
+def bce_loss(p: np.ndarray, y: np.ndarray) -> float:
+    eps = 1e-9
+    return float(-np.mean(y * np.log(p + eps) + (1 - y) * np.log(1 - p + eps)))
+
+
+def mlp_backward(W, activations, zs, y: np.ndarray, act_prime):
+    """Backprop. For sigmoid + cross-entropy the output error simplifies to
+    (p - y); each earlier layer applies the chain rule. Returns per-layer
+    weight and bias gradients."""
+    n = y.shape[0]
+    L = len(W)
+    dWs: list[np.ndarray | None] = [None] * L
+    dbs: list[np.ndarray | None] = [None] * L
+    delta = (activations[-1] - y) / n
+    for layer in range(L - 1, -1, -1):
+        dWs[layer] = activations[layer].T @ delta
+        dbs[layer] = delta.sum(axis=0, keepdims=True)
+        if layer > 0:
+            delta = (delta @ W[layer].T) * act_prime(zs[layer - 1])
+    return dWs, dbs
+
+
 @router.post("/train-network")
 def train_network(body: TrainRequest):
     hidden = [max(1, min(16, h)) for h in body.hidden_layers]
@@ -207,50 +253,23 @@ def train_network(body: TrainRequest):
     rng = np.random.default_rng(body.seed)
 
     X, y = make_dataset(body.dataset, rng)
-    n = X.shape[0]
 
-    # He initialization for ReLU, Xavier for tanh.
     sizes = [2, *hidden, 1]
-    gain = 2.0 if body.activation == "relu" else 1.0
-    W = [rng.normal(0, np.sqrt(gain / sizes[i]), (sizes[i], sizes[i + 1])) for i in range(len(sizes) - 1)]
-    b = [np.zeros((1, sizes[i + 1])) for i in range(len(sizes) - 1)]
+    W, b = mlp_init(sizes, body.activation, rng)
     L = len(W)
 
     loss_curve = []
     for epoch in range(body.epochs):
-        # Forward pass, keeping every pre-activation z and activation a
-        # because backprop needs them.
-        activations = [X]
-        zs = []
-        a = X
+        activations, zs = mlp_forward(W, b, X, act)
+        loss_curve.append(bce_loss(activations[-1], y))
+        dWs, dbs = mlp_backward(W, activations, zs, y, act_prime)
         for layer in range(L):
-            z = a @ W[layer] + b[layer]
-            zs.append(z)
-            a = sigmoid(z) if layer == L - 1 else act(z)
-            activations.append(a)
-        p = activations[-1]
-
-        eps = 1e-9
-        loss = float(-np.mean(y * np.log(p + eps) + (1 - y) * np.log(1 - p + eps)))
-        loss_curve.append(loss)
-
-        # Backward pass. For sigmoid + cross-entropy the output error
-        # simplifies to (p - y); each earlier layer applies the chain rule.
-        delta = (p - y) / n
-        for layer in range(L - 1, -1, -1):
-            dW = activations[layer].T @ delta
-            db = delta.sum(axis=0, keepdims=True)
-            if layer > 0:
-                delta = (delta @ W[layer].T) * act_prime(zs[layer - 1])
-            W[layer] -= body.learning_rate * dW
-            b[layer] -= body.learning_rate * db
+            W[layer] -= body.learning_rate * dWs[layer]
+            b[layer] -= body.learning_rate * dbs[layer]
 
     def predict(points: np.ndarray) -> np.ndarray:
-        a = points
-        for layer in range(L):
-            z = a @ W[layer] + b[layer]
-            a = sigmoid(z) if layer == L - 1 else act(z)
-        return a
+        activations, _ = mlp_forward(W, b, points, act)
+        return activations[-1]
 
     accuracy = float(np.mean((predict(X) > 0.5) == (y > 0.5)))
 
@@ -304,35 +323,12 @@ def gradient_flow(body: GradientFlowRequest):
     for name, (act, act_prime) in FLOW_ACTIVATIONS.items():
         rng = np.random.default_rng(body.seed)  # same data/weights per activation
         X, y = make_dataset("circles", rng, n=128)
-        n = X.shape[0]
 
         sizes = [2, *([body.width] * body.depth), 1]
-        gain = 2.0 if name == "relu" else 1.0
-        W = [
-            rng.normal(0, np.sqrt(gain / sizes[i]), (sizes[i], sizes[i + 1]))
-            for i in range(len(sizes) - 1)
-        ]
-        b = [np.zeros((1, sizes[i + 1])) for i in range(len(sizes) - 1)]
-        L = len(W)
-
-        activations = [X]
-        zs = []
-        a = X
-        for layer in range(L):
-            z = a @ W[layer] + b[layer]
-            zs.append(z)
-            a = sigmoid(z) if layer == L - 1 else act(z)
-            activations.append(a)
-
-        delta = (activations[-1] - y) / n
-        layer_norms: list[float] = []
-        for layer in range(L - 1, -1, -1):
-            dW = activations[layer].T @ delta
-            layer_norms.append(float(np.mean(np.abs(dW))))
-            if layer > 0:
-                delta = (delta @ W[layer].T) * act_prime(zs[layer - 1])
-        layer_norms.reverse()  # index 0 = first (earliest) layer
-        norms[name] = layer_norms
+        W, b = mlp_init(sizes, name, rng)
+        activations, zs = mlp_forward(W, b, X, act)
+        dWs, _ = mlp_backward(W, activations, zs, y, act_prime)
+        norms[name] = [float(np.mean(np.abs(dW))) for dW in dWs]
 
     return {
         "depth": body.depth,
