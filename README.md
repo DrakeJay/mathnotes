@@ -78,6 +78,24 @@ implements gradient descent and backpropagation longhand in NumPy — the same
 four equations the Backpropagation lesson derives — and the frontend just
 visualizes the returned trajectories, loss curves, and decision boundaries.
 
+## Database migrations
+
+The schema is managed by Alembic (`backend/alembic/`), and migrations run
+automatically at app startup. To evolve the schema:
+
+```bash
+cd backend
+# 1. edit app/models.py
+# 2. generate a migration and REVIEW it (autogenerate is a draft, not gospel):
+.venv/bin/alembic revision --autogenerate -m "describe the change"
+# 3. restart the app (or: .venv/bin/alembic upgrade head)
+```
+
+`tests/test_migrations.py` fails CI if models and migrations ever drift, and
+verifies every migration downgrades cleanly. Startup auto-upgrade is fine for
+a single process; if you ever run multiple replicas, do `alembic upgrade head`
+as a deploy step instead.
+
 ## Testing
 
 ```bash
@@ -115,8 +133,6 @@ POST   /api/ml/train-network        {dataset, hidden_layers, …} → boundary +
   roles on top of the existing `users` table.
 - Lesson HTML is rendered with `rehype-raw` (needed for `<demo>` tags), which
   trusts lesson content — acceptable while the only author is the admin.
-- Schema changes currently rely on `create_all`; introduce Alembic migrations
-  when the models next change.
 - Content updates: `python -m app.seed --refresh` (from `backend/`, venv
   active) re-applies seed-file content to lessons you haven't edited in the
   admin UI.

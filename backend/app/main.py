@@ -5,14 +5,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .auth import ensure_admin_user
 from .config import settings
-from .database import Base, SessionLocal, engine
+from .database import SessionLocal
+from .migrations import run_migrations
 from .routers import auth, lessons, ml, topics
 from .seed import seed_if_empty
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(engine)
+    run_migrations()
     with SessionLocal() as db:
         seed_if_empty(db)
         ensure_admin_user(db)
