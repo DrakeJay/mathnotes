@@ -1,5 +1,9 @@
 # MathNotes — the math behind machine learning
 
+> New here (or future-me)? **[GUIDE.md](GUIDE.md)** is the full developer
+> handbook: architecture walkthroughs, step-by-step recipes for every kind of
+> change, and troubleshooting.
+
 A full-stack learning platform for the mathematics inside neural networks.
 Lessons are written in Markdown with LaTeX and can embed **interactive demos
 whose math runs live on the server in NumPy** — real gradient descent on real
