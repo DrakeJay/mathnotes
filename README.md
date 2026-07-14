@@ -84,7 +84,7 @@ visualizes the returned trajectories, loss curves, and decision boundaries.
 
 ## Deployment
 
-Live at **https://mathnotes-drakejay-drakejays-projects.vercel.app** —
+Live at **https://nablanotes.vercel.app** —
 frontend on Vercel (free tier), backend + Postgres on Railway.
 
 - **Backend (Railway):** built from `backend/Dockerfile`

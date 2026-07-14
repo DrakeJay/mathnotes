@@ -536,7 +536,7 @@ E2E is local-only for now (CI has no running stack).
 
 ## 9. Deployment
 
-**Live site:** https://mathnotes-drakejay-drakejays-projects.vercel.app
+**Live site:** https://nablanotes.vercel.app
 
 | Piece | Where | How it's built |
 | --- | --- | --- |
