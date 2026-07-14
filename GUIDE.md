@@ -1,27 +1,27 @@
 # MathNotes Developer Guide
 
-The complete handbook for understanding, running, changing, and deploying
-this project. The [README](README.md) is the quick overview; this is the
-deep version.
+Reference documentation for this project: how it is put together, how to run
+it, how to make changes, and how to deploy. The [README](README.md) is the
+short version.
 
 ## Table of contents
 
-1. [The big picture](#1-the-big-picture)
+1. [Architecture](#1-architecture)
 2. [Repository map](#2-repository-map)
-3. [How a request flows (three walkthroughs)](#3-how-a-request-flows)
+3. [How a request flows](#3-how-a-request-flows)
 4. [The backend, file by file](#4-the-backend-file-by-file)
 5. [The frontend, file by file](#5-the-frontend-file-by-file)
 6. [Running everything locally](#6-running-everything-locally)
-7. [Recipes: making changes step by step](#7-recipes-making-changes-step-by-step)
+7. [Making changes step by step](#7-making-changes-step-by-step)
 8. [Testing](#8-testing)
 9. [Deployment](#9-deployment)
 10. [Troubleshooting](#10-troubleshooting)
 
 ---
 
-## 1. The big picture
+## 1. Architecture
 
-MathNotes is three processes talking to each other:
+MathNotes is three processes:
 
 ```
 ┌─────────────────────────┐
@@ -44,7 +44,7 @@ MathNotes is three processes talking to each other:
 └─────────────────────────┘   users, sessions, alembic_version
 ```
 
-Key architectural decisions, and *why*:
+Design decisions and the reasons for them:
 
 - **The browser only ever talks to the Next.js origin.** Client-side calls to
   `/api/...` are proxied to FastAPI by a rewrite rule. This keeps the session
@@ -53,19 +53,18 @@ Key architectural decisions, and *why*:
 - **Lessons are Markdown stored in Postgres**, written with LaTeX math and
   special `<demo name="..."></demo>` tags that the frontend turns into live
   interactive components.
-- **The interesting demos compute on the server in NumPy**
+- **Four demos compute on the server in NumPy**
   (`backend/app/routers/ml.py`). Gradient descent and backpropagation are
   implemented longhand — the same equations the lessons derive — and the
   frontend only visualizes the JSON they return.
-- **Auth is intentionally single-admin but production-shaped**: bcrypt-hashed
-  password in a `users` table, revocable server-side sessions delivered as
-  httpOnly cookies. Anyone can read; editing requires login.
+- **Auth is single-admin**: bcrypt-hashed password in a `users` table,
+  revocable server-side sessions delivered as httpOnly cookies. Anyone can
+  read; editing requires login.
 - **Schema is managed by Alembic migrations** which run automatically at app
   startup; a test fails CI if models and migrations ever drift.
 
-In production the same picture holds, with different hosts:
-Vercel runs Next.js, Railway runs FastAPI + Postgres
-(see [§9 Deployment](#9-deployment)).
+Production runs the same three processes on different hosts: Vercel runs
+Next.js, Railway runs FastAPI and Postgres (see [§9 Deployment](#9-deployment)).
 
 ---
 
@@ -210,9 +209,9 @@ with dev-friendly defaults:
 | `COOKIE_SECURE` | `false` | Set `true` behind HTTPS (production) |
 | `CORS_ORIGINS` | localhost:3000 | Mostly vestigial thanks to the proxy |
 
-### main.py — startup order matters
+### main.py — application startup
 
-The `lifespan` function runs before the first request:
+The `lifespan` function runs before the first request, in this order:
 `run_migrations()` (alembic upgrade head) → `seed_if_empty()` (loads the
 curriculum into an empty DB) → `ensure_admin_user()` (creates or re-syncs
 the admin from `ADMIN_PASSWORD`).
@@ -225,9 +224,9 @@ the admin from `ADMIN_PASSWORD`).
 - `lessons.updated_at` auto-updates on edit — `seed.py --refresh` uses
   `updated_at == created_at` to detect "never hand-edited"
 
-### routers/ml.py — the math engine
+### routers/ml.py — ML demo endpoints
 
-Read this file top to bottom; it is the intellectual core of the project.
+All demo computations live in this file.
 
 | Endpoint | Math it implements | Used by demo |
 | --- | --- | --- |
@@ -241,9 +240,9 @@ exist once and are unit-tested against finite differences — if you change
 them and break the calculus, `pytest` fails.
 
 Every request model uses pydantic `Field` bounds (e.g. `epochs ≤ 2000`) so
-nobody can make the server grind on a huge computation.
+requests cannot trigger arbitrarily large computations.
 
-### seed.py — the curriculum
+### seed.py — seed data
 
 `TOPICS` lists the seeded topics/lessons; each lesson's body lives in
 `seed_content/<slug>.md`. Two commands:
@@ -312,7 +311,7 @@ refresh}`. State comes from `GET /api/auth/me` — there is no token in
 localStorage, by design. Admin pages render `null` while `loading`, a login
 form when `anon`.
 
-### api.ts — one subtle line
+### api.ts — how the API base URL is chosen
 
 ```ts
 const API_URL = typeof window === "undefined"
@@ -361,7 +360,7 @@ Machine quirks to remember:
 
 ---
 
-## 7. Recipes: making changes step by step
+## 7. Making changes step by step
 
 ### 7.1 Add or edit a lesson (content only — no code)
 
@@ -444,7 +443,7 @@ Follow the `momentum` demo as a template end to end:
    cd backend && .venv/bin/alembic revision --autogenerate -m "add lessons.reading_time"
    ```
 3. **Review the generated file** in `alembic/versions/` — autogenerate is a
-   draft. Known gotcha: replace `server_default=sa.text('now()')` with
+   draft. Known issue: replace `server_default=sa.text('now()')` with
    `sa.func.now()` (portable to the SQLite test DB).
 4. Apply: restart uvicorn (migrations run at startup) or
    `.venv/bin/alembic upgrade head`.
@@ -586,7 +585,7 @@ E2E_BASE_URL=<site> ADMIN_PASSWORD=<pw> npm run test:e2e   # full check
 Rollback: Vercel dashboard → Deployments → promote an older one. Railway
 dashboard → backend → Deployments → redeploy a previous build.
 
-### Production gotchas already handled (don't re-trip them)
+### Known production issues (already handled)
 
 - Vercel **deployment protection** was on by default (site redirected to
   Vercel SSO); it's disabled in project settings. New Vercel projects will
@@ -611,12 +610,12 @@ dashboard → backend → Deployments → redeploy a previous build.
 | Math not rendering (`$x$` shows literally) | Malformed delimiters, or KaTeX CSS missing | Check `$` pairing; `katex/dist/katex.min.css` is imported in `layout.tsx` |
 | Login always fails locally | `ADMIN_PASSWORD` in `backend/.env` differs from what you're typing | The env var is the source of truth; hash re-syncs on restart |
 | Logged out unexpectedly | Session expired (7 days) or sessions table cleared | Log in again — nothing is wrong |
-| `pytest` fails in `test_migrations.py` | You changed models without a migration (drift), or wrote a non-portable migration | Recipe 7.5; check `server_default` portability |
+| `pytest` fails in `test_migrations.py` | You changed models without a migration (drift), or wrote a non-portable migration | See §7.5; check `server_default` portability |
 | `alembic` says "Target database is not up to date" | DB has unapplied migrations | `.venv/bin/alembic upgrade head` |
 | Prod site broken right after deploy | Env var missing/stale, or backend still booting | `railway logs`; hit `/api/health`; remember Vercel env changes need a redeploy |
 | Vercel URL redirects to an SSO page | Deployment protection re-enabled (new project or setting change) | Vercel dashboard → Settings → Deployment Protection → disable |
 
 ---
 
-*Keep this file honest: when you change how something works, update the
-section that describes it — future-you is the audience.*
+*When you change how something works, update the section of this file that
+describes it.*
