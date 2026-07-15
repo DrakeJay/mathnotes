@@ -1,6 +1,7 @@
 "use client";
 
 import ActivationFunctionsDemo from "./ActivationFunctionsDemo";
+import AttentionDemo from "./AttentionDemo";
 import DotProductDemo from "./DotProductDemo";
 import GradientDescentDemo from "./GradientDescentDemo";
 import LinearTransformDemo from "./LinearTransformDemo";
@@ -20,6 +21,7 @@ export const DEMO_NAMES = [
   "neural-network",
   "vanishing-gradients",
   "softmax",
+  "attention",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -32,6 +34,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "neural-network": NeuralNetworkDemo,
   "vanishing-gradients": VanishingGradientsDemo,
   softmax: SoftmaxDemo,
+  attention: AttentionDemo,
 };
 
 export default function DemoBlock({

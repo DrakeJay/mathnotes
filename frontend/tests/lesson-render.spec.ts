@@ -38,6 +38,21 @@ test("softmax lesson renders its client-side demo", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
+test("attention lesson renders its interactive demo", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/attention");
+  await expect(
+    page.getByRole("heading", { name: "Attention: The Math Behind Transformers", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("Scaled dot-product attention, hands on")).toBeVisible();
+  // Default selection is "picked"; the causal mask hides future tokens.
+  await page.getByText("causal mask (no peeking at the future)").click();
+  await expect(page.getByText(/uniform over 3 visible tokens/)).toBeVisible();
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(
