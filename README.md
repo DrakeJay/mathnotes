@@ -72,6 +72,7 @@ Available demos:
 | `dot-product` | Draggable vectors: dot product, angle, projection | browser |
 | `activation-functions` | sigmoid/tanh/ReLU and their derivatives | browser |
 | `tangent-line` | Secant → tangent as h → 0 (the limit definition) | browser |
+| `softmax` | Logits → probabilities with temperature; live cross-entropy | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |
@@ -155,8 +156,8 @@ POST   /api/ml/train-network        {dataset, hidden_layers, …} → boundary +
   roles on top of the existing `users` table.
 - Lesson HTML is rendered with `rehype-raw` (needed for `<demo>` tags), which
   trusts lesson content — acceptable while the only author is the admin.
-- Content updates: `python -m app.seed --refresh` (from `backend/`, venv
-  active) re-applies seed-file content to lessons you haven't edited in the
-  admin UI.
+- Seed content syncs at startup: new seed lessons are created and never-edited
+  ones refreshed automatically (`python -m app.seed` runs the same sync
+  manually). Lessons edited in the admin UI are left alone.
 - Ideas: lesson search, prev/next navigation, more demos (Adam and learning-rate
   schedules, softmax + cross-entropy, attention), MDX export.

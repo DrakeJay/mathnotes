@@ -212,9 +212,9 @@ with dev-friendly defaults:
 ### main.py — application startup
 
 The `lifespan` function runs before the first request, in this order:
-`run_migrations()` (alembic upgrade head) → `seed_if_empty()` (loads the
-curriculum into an empty DB) → `ensure_admin_user()` (creates or re-syncs
-the admin from `ADMIN_PASSWORD`).
+`run_migrations()` (alembic upgrade head) → `sync_seed_content()` (creates
+missing seed topics/lessons, refreshes never-edited ones) →
+`ensure_admin_user()` (creates or re-syncs the admin from `ADMIN_PASSWORD`).
 
 ### models.py — four tables
 
@@ -245,13 +245,17 @@ requests cannot trigger arbitrarily large computations.
 ### seed.py — seed data
 
 `TOPICS` lists the seeded topics/lessons; each lesson's body lives in
-`seed_content/<slug>.md`. Two commands:
+`seed_content/<slug>.md`. `sync_seed_content()` runs at every startup and
+can also be run manually:
 
 ```bash
-.venv/bin/python -m app.seed              # seed only if DB is empty
-.venv/bin/python -m app.seed --refresh    # push edited seed files into the
-                                          # DB, skipping hand-edited lessons
+.venv/bin/python -m app.seed    # create missing lessons, refresh un-edited ones
 ```
+
+Rules: lessons edited in the admin UI are never overwritten (detected by
+`updated_at == created_at`); lessons present in `TOPICS` but missing from the
+database are created — which also means deleting a seeded lesson in the admin
+UI without removing its `TOPICS` entry brings it back on the next startup.
 
 ---
 
@@ -286,7 +290,8 @@ Keep a blank line above and below the tag. Unknown names render a helpful
 "available demos" box rather than crashing.
 
 Current demos — client-side (math runs in the browser):
-`linear-transform`, `dot-product`, `activation-functions`, `tangent-line`.
+`linear-transform`, `dot-product`, `activation-functions`, `tangent-line`,
+`softmax`.
 Server-side (math runs in NumPy via `/api/ml/*`):
 `gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients`.
 
@@ -382,8 +387,9 @@ project itself:
 1. Edit or add a file in `backend/app/seed_content/<slug>.md`.
 2. If it's a **new** lesson, register it in the `TOPICS` list in
    `backend/app/seed.py` (slug, title, summary — position = list order).
-3. Push it into your running DB: `.venv/bin/python -m app.seed --refresh`
-   (lessons you've hand-edited in the admin UI are skipped, on purpose).
+3. Restart the backend (the sync runs at startup), or run
+   `.venv/bin/python -m app.seed`. New lessons are created; lessons you've
+   hand-edited in the admin UI are never overwritten.
 4. Commit the seed files.
 
 ### 7.3 Create a client-side interactive demo
