@@ -50,6 +50,9 @@ test("attention lesson renders its interactive demo", async ({ page }) => {
   // Default selection is "picked"; the causal mask hides future tokens.
   await page.getByText("causal mask (no peeking at the future)").click();
   await expect(page.getByText(/uniform over 3 visible tokens/)).toBeVisible();
+  // The two architecture diagrams render too.
+  await expect(page.getByText("Inside one attention layer")).toBeVisible();
+  await expect(page.getByText("The transformer, assembled")).toBeVisible();
   expect(pageErrors).toEqual([]);
 });
 

@@ -2,7 +2,9 @@
 
 import ActivationFunctionsDemo from "./ActivationFunctionsDemo";
 import AttentionDemo from "./AttentionDemo";
+import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import DotProductDemo from "./DotProductDemo";
+import TransformerArchitectureDiagram from "./TransformerArchitectureDiagram";
 import GradientDescentDemo from "./GradientDescentDemo";
 import LinearTransformDemo from "./LinearTransformDemo";
 import MomentumDemo from "./MomentumDemo";
@@ -22,6 +24,8 @@ export const DEMO_NAMES = [
   "vanishing-gradients",
   "softmax",
   "attention",
+  "attention-pipeline",
+  "transformer-architecture",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -35,6 +39,8 @@ const DEMOS: Record<string, React.ComponentType> = {
   "vanishing-gradients": VanishingGradientsDemo,
   softmax: SoftmaxDemo,
   attention: AttentionDemo,
+  "attention-pipeline": AttentionPipelineDiagram,
+  "transformer-architecture": TransformerArchitectureDiagram,
 };
 
 export default function DemoBlock({

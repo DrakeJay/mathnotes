@@ -54,7 +54,9 @@ $$
 \operatorname{Attention}(Q, K, V) = \operatorname{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 $$
 
-Notice what it's made of: two matrix multiplications and a softmax. Nothing you haven't already met.
+Notice what it's made of: two matrix multiplications and a softmax. Nothing you haven't already met. Here is the whole computation as a pipeline — hover any stage:
+
+<demo name="attention-pipeline"></demo>
 
 ## Causal masking: no peeking at the future
 
@@ -80,6 +82,8 @@ One attention layer is rarely alone:
 - **Multi-head attention.** Run $h$ small attentions in parallel, each with its own $W_Q, W_K, W_V$ — one head can track syntax while another tracks coreference — then concatenate the outputs.
 - **The block.** A transformer block is attention followed by a small MLP (the two-layer networks from the backpropagation lesson), each wrapped with a residual connection and a normalization.
 - **The model.** Embed tokens → stack $N$ blocks → a final linear layer + softmax over the vocabulary (the last lesson again) predicts the next token. GPT is this, repeated at scale, trained with cross-entropy by backpropagation and Adam-style gradient descent.
+
+<demo name="transformer-architecture"></demo>
 
 Every lesson in this course is a load-bearing part of that description.
 

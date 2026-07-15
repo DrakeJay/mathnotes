@@ -294,6 +294,8 @@ Current demos — client-side (math runs in the browser):
 `softmax`, `attention`.
 Server-side (math runs in NumPy via `/api/ml/*`):
 `gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients`.
+Static diagrams (same embed mechanism): `attention-pipeline`,
+`transformer-architecture`.
 
 ### Charts and color (components/viz/)
 

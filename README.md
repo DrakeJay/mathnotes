@@ -74,6 +74,8 @@ Available demos:
 | `tangent-line` | Secant → tangent as h → 0 (the limit definition) | browser |
 | `softmax` | Logits → probabilities with temperature; live cross-entropy | browser |
 | `attention` | Drag a token's query; attention weights + matrix, causal mask | browser |
+| `attention-pipeline` | Data-flow diagram of one attention layer (hover stages) | browser |
+| `transformer-architecture` | One block + the full GPT pipeline, as diagrams | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |
