@@ -24,6 +24,20 @@ test("lesson page renders KaTeX math and a live server-computed demo", async ({
   expect(pageErrors).toEqual([]);
 });
 
+test("softmax lesson renders its client-side demo", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/softmax-cross-entropy");
+  await expect(
+    page.getByRole("heading", { name: "Softmax and Cross-Entropy", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("Softmax: logits → probabilities")).toBeVisible();
+  // Default logits [2, 0.5, -1, -3] at T=1: class 1 dominates.
+  await expect(page.getByText(/Cross-entropy L = −ln p/)).toBeVisible();
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

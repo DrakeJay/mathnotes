@@ -6,6 +6,7 @@ import GradientDescentDemo from "./GradientDescentDemo";
 import LinearTransformDemo from "./LinearTransformDemo";
 import MomentumDemo from "./MomentumDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
+import SoftmaxDemo from "./SoftmaxDemo";
 import TangentLineDemo from "./TangentLineDemo";
 import VanishingGradientsDemo from "./VanishingGradientsDemo";
 
@@ -18,6 +19,7 @@ export const DEMO_NAMES = [
   "momentum",
   "neural-network",
   "vanishing-gradients",
+  "softmax",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -29,6 +31,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   momentum: MomentumDemo,
   "neural-network": NeuralNetworkDemo,
   "vanishing-gradients": VanishingGradientsDemo,
+  softmax: SoftmaxDemo,
 };
 
 export default function DemoBlock({
