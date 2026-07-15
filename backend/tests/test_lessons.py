@@ -48,3 +48,41 @@ def test_lesson_crud_and_slug_uniqueness(admin):
 def test_create_lesson_rejects_unknown_topic(admin):
     res = admin.post("/api/lessons", json={"title": "X", "topic_id": 99999})
     assert res.status_code == 400
+
+
+def test_seed_sync_recreates_missing_lessons(admin):
+    from app.database import SessionLocal
+    from app.seed import sync_seed_content
+
+    lesson = admin.get("/api/lessons/softmax-cross-entropy").json()
+    assert admin.delete(f"/api/lessons/{lesson['id']}").status_code == 204
+
+    with SessionLocal() as db:
+        sync_seed_content(db)
+
+    restored = admin.get("/api/lessons/softmax-cross-entropy")
+    assert restored.status_code == 200
+    assert "Temperature" in restored.json()["content"]
+
+
+def test_seed_sync_preserves_hand_edited_lessons(admin):
+    from sqlalchemy import text
+
+    from app.database import SessionLocal
+    from app.seed import sync_seed_content
+
+    lesson = admin.get("/api/lessons/gradient-descent").json()
+    admin.put(f"/api/lessons/{lesson['id']}", json={"content": "my custom edit"})
+
+    with SessionLocal() as db:
+        sync_seed_content(db)
+    assert admin.get("/api/lessons/gradient-descent").json()["content"] == "my custom edit"
+
+    # Un-mark the lesson as edited; sync then restores the seed content.
+    with SessionLocal() as db:
+        db.execute(
+            text("UPDATE lessons SET updated_at = created_at WHERE slug = 'gradient-descent'")
+        )
+        db.commit()
+        sync_seed_content(db)
+    assert "update rule" in admin.get("/api/lessons/gradient-descent").json()["content"]

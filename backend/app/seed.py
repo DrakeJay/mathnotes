@@ -1,4 +1,16 @@
-"""Seed the database with the starter curriculum on first boot."""
+"""Seed and sync the starter curriculum.
+
+`sync_seed_content` runs at every app startup (and via `python -m app.seed`):
+
+- creates topics and lessons that exist in TOPICS but not in the database,
+  so newly shipped seed lessons appear on deploy;
+- refreshes lessons whose content has never been hand-edited in the admin UI
+  (detected by updated_at == created_at);
+- never touches hand-edited lessons.
+
+Consequence worth knowing: deleting a seeded lesson in the admin UI without
+also removing its entry below means it comes back on the next startup.
+"""
 
 from pathlib import Path
 
@@ -44,69 +56,56 @@ TOPICS = [
                 "title": "Backpropagation",
                 "summary": "The chain rule organized into one backward sweep — every gradient in the network for the cost of two forward passes.",
             },
+            {
+                "slug": "softmax-cross-entropy",
+                "title": "Softmax and Cross-Entropy",
+                "summary": "How networks turn scores into probabilities over many classes, why cross-entropy is the right loss, and the clean gradient that pairs them.",
+            },
         ],
     },
 ]
 
 
-def refresh_seed_content(db: Session) -> None:
-    """Re-apply seed-file content to seeded lessons that have never been
-    edited in the admin UI (updated_at still equals created_at), so shipping
-    new seed content doesn't clobber anyone's changes."""
+def sync_seed_content(db: Session) -> None:
     for topic_spec in TOPICS:
-        for lesson_spec in topic_spec["lessons"]:
-            lesson = db.scalar(select(Lesson).where(Lesson.slug == lesson_spec["slug"]))
-            if lesson is None:
-                print(f"skip {lesson_spec['slug']}: not in database")
-                continue
-            if lesson.updated_at != lesson.created_at:
-                print(f"skip {lesson_spec['slug']}: edited since seeding")
-                continue
-            content = (CONTENT_DIR / f"{lesson_spec['slug']}.md").read_text()
-            if lesson.content == content and lesson.summary == lesson_spec["summary"]:
-                print(f"skip {lesson_spec['slug']}: already current")
-                continue
-            lesson.content = content
-            lesson.summary = lesson_spec["summary"]
-            print(f"refreshed {lesson_spec['slug']}")
-    db.commit()
-
-
-def seed_if_empty(db: Session) -> None:
-    if db.scalar(select(Topic).limit(1)) is not None:
-        return
-    for topic_spec in TOPICS:
-        topic = Topic(
-            slug=topic_spec["slug"],
-            title=topic_spec["title"],
-            description=topic_spec["description"],
-            position=topic_spec["position"],
-        )
-        db.add(topic)
-        db.flush()
+        topic = db.scalar(select(Topic).where(Topic.slug == topic_spec["slug"]))
+        if topic is None:
+            topic = Topic(
+                slug=topic_spec["slug"],
+                title=topic_spec["title"],
+                description=topic_spec["description"],
+                position=topic_spec["position"],
+            )
+            db.add(topic)
+            db.flush()
+            print(f"seed: created topic {topic.slug}")
         for position, lesson_spec in enumerate(topic_spec["lessons"], start=1):
             content = (CONTENT_DIR / f"{lesson_spec['slug']}.md").read_text()
-            db.add(
-                Lesson(
-                    topic_id=topic.id,
-                    slug=lesson_spec["slug"],
-                    title=lesson_spec["title"],
-                    summary=lesson_spec["summary"],
-                    content=content,
-                    position=position,
+            lesson = db.scalar(select(Lesson).where(Lesson.slug == lesson_spec["slug"]))
+            if lesson is None:
+                db.add(
+                    Lesson(
+                        topic_id=topic.id,
+                        slug=lesson_spec["slug"],
+                        title=lesson_spec["title"],
+                        summary=lesson_spec["summary"],
+                        content=content,
+                        position=position,
+                    )
                 )
-            )
+                print(f"seed: created lesson {lesson_spec['slug']}")
+                continue
+            if lesson.updated_at != lesson.created_at:
+                continue  # hand-edited in the admin UI; leave it alone
+            if lesson.content != content or lesson.summary != lesson_spec["summary"]:
+                lesson.content = content
+                lesson.summary = lesson_spec["summary"]
+                print(f"seed: refreshed lesson {lesson_spec['slug']}")
     db.commit()
-    print(f"Seeded {len(TOPICS)} topics.")
 
 
 if __name__ == "__main__":
-    import sys
-
     from .database import SessionLocal
 
     with SessionLocal() as session:
-        if "--refresh" in sys.argv:
-            refresh_seed_content(session)
-        else:
-            seed_if_empty(session)
+        sync_seed_content(session)

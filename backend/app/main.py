@@ -8,14 +8,14 @@ from .config import settings
 from .database import SessionLocal
 from .migrations import run_migrations
 from .routers import auth, lessons, ml, topics
-from .seed import seed_if_empty
+from .seed import sync_seed_content
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     run_migrations()
     with SessionLocal() as db:
-        seed_if_empty(db)
+        sync_seed_content(db)
         ensure_admin_user(db)
     yield
 
