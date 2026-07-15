@@ -44,7 +44,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(4 lessons across 2 topics).
+(6 lessons across 3 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -73,6 +73,7 @@ Available demos:
 | `activation-functions` | sigmoid/tanh/ReLU and their derivatives | browser |
 | `tangent-line` | Secant → tangent as h → 0 (the limit definition) | browser |
 | `softmax` | Logits → probabilities with temperature; live cross-entropy | browser |
+| `attention` | Drag a token's query; attention weights + matrix, causal mask | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |
