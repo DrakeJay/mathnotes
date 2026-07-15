@@ -63,6 +63,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "architectures",
+        "title": "Modern Architectures",
+        "description": "The building blocks of today's models — attention and the transformer.",
+        "position": 3,
+        "lessons": [
+            {
+                "slug": "attention",
+                "title": "Attention: The Math Behind Transformers",
+                "summary": "Queries, keys, and values; scaled dot-product attention; causal masking — the equation at the heart of every LLM, built from dot products and softmax.",
+            },
+        ],
+    },
 ]
 
 

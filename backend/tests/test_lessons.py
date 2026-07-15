@@ -4,9 +4,10 @@
 def test_seeded_curriculum(client):
     topics = client.get("/api/topics").json()
     slugs = {t["slug"]: [l["slug"] for l in t["lessons"]] for t in topics}
-    assert "foundations" in slugs and "training" in slugs
+    assert "foundations" in slugs and "training" in slugs and "architectures" in slugs
     assert "gradient-descent" in slugs["training"]
     assert "backpropagation" in slugs["training"]
+    assert "attention" in slugs["architectures"]
 
 
 def test_lesson_content_renders_math_and_demos(client):
