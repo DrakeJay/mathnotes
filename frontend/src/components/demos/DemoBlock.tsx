@@ -12,6 +12,7 @@ import InscribedAngleDemo from "./InscribedAngleDemo";
 import ThalesDemo from "./ThalesDemo";
 import TransformerArchitectureDiagram from "./TransformerArchitectureDiagram";
 import LinearTransformDemo from "./LinearTransformDemo";
+import LogicGatesDemo from "./LogicGatesDemo";
 import MomentumDemo from "./MomentumDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
 import SoftmaxDemo from "./SoftmaxDemo";
@@ -38,6 +39,7 @@ export const DEMO_NAMES = [
   "finite-automata",
   "stack-machine",
   "call-stack",
+  "logic-gates",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -59,6 +61,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "finite-automata": FiniteAutomataDemo,
   "stack-machine": StackMachineDemo,
   "call-stack": CallStackDemo,
+  "logic-gates": LogicGatesDemo,
 };
 
 export default function DemoBlock({

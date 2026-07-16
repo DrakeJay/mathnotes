@@ -133,6 +133,27 @@ test("call-stack demo runs factorial and overflows on infinite recursion", async
   expect(pageErrors).toEqual([]);
 });
 
+test("logic gates demo computes AND and adds with the half adder", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/logic-gates");
+  await expect(page.getByRole("heading", { name: "Logic Gates", level: 1 })).toBeVisible();
+  // One gate (AND): flip both switches — 1 ∧ 1 = 1.
+  await expect(page.getByText("0 ∧ 0 = 0")).toBeVisible();
+  await page.getByRole("switch", { name: "input A" }).click();
+  await page.getByRole("switch", { name: "input B" }).click();
+  await expect(page.getByText("1 ∧ 1 = 1")).toBeVisible();
+
+  // Half adder: 1 + 1 = 10₂.
+  await page.locator("select").last().selectOption("2");
+  await page.getByRole("switch", { name: "input A" }).click();
+  await page.getByRole("switch", { name: "input B" }).click();
+  await expect(page.getByText(/1 \+ 1 = 10₂/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(
