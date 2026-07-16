@@ -14,6 +14,7 @@ import LinearTransformDemo from "./LinearTransformDemo";
 import MomentumDemo from "./MomentumDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
 import SoftmaxDemo from "./SoftmaxDemo";
+import StackMachineDemo from "./StackMachineDemo";
 import TangentLineDemo from "./TangentLineDemo";
 import VanishingGradientsDemo from "./VanishingGradientsDemo";
 
@@ -34,6 +35,7 @@ export const DEMO_NAMES = [
   "inscribed-angle",
   "equal-tangents",
   "finite-automata",
+  "stack-machine",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -53,6 +55,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "inscribed-angle": InscribedAngleDemo,
   "equal-tangents": EqualTangentsDemo,
   "finite-automata": FiniteAutomataDemo,
+  "stack-machine": StackMachineDemo,
 };
 
 export default function DemoBlock({

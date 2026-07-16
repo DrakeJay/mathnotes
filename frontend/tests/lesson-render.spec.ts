@@ -91,6 +91,28 @@ test("finite automata demo steps to a verdict", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
+test("stack machine steps brackets to balanced and computes RPN", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/stacks");
+  await expect(page.getByRole("heading", { name: "Stacks", level: 1 })).toBeVisible();
+  // Default machine: balanced brackets, sample ([{}]()) — 8 steps to balanced.
+  for (let i = 0; i < 8; i++) {
+    await page.getByRole("button", { name: "Step", exact: true }).click();
+  }
+  await expect(page.getByText("✓ balanced")).toBeVisible();
+
+  // RPN machine: 3 4 + 2 *  →  14.
+  await page.locator("select").last().selectOption("2");
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(page.getByText("(one value left: the result)")).toBeVisible({
+    timeout: 10_000,
+  });
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(
