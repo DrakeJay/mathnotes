@@ -294,7 +294,8 @@ Current demos — client-side (math runs in the browser):
 `softmax`, `attention`, plus the diagrams `attention-pipeline` and
 `transformer-architecture`, and the geometry constructions `thales`,
 `inscribed-angle`, `equal-tangents` (shared helpers in
-`demos/geometry.ts`), and the steppable `finite-automata` machine runner.
+`demos/geometry.ts`), and the steppable machine runners `finite-automata`
+and `stack-machine`.
 Server-side (math runs in NumPy via `/api/ml/*`):
 `gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients`.
 Static diagrams (same embed mechanism): `attention-pipeline`,

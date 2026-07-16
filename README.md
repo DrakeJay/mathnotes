@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(10 lessons across 5 topics).
+(11 lessons across 5 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -82,6 +82,7 @@ Available demos:
 | `inscribed-angle` | Central vs. inscribed angle, all three points draggable | browser |
 | `equal-tangents` | Drag an external point; both tangent lengths stay equal | browser |
 | `finite-automata` | Step a DFA through input on a live state diagram | browser |
+| `stack-machine` | Brackets, aⁿbⁿ, and RPN evaluated on a live stack | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |
