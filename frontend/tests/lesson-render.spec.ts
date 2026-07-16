@@ -74,6 +74,23 @@ test("geometry lessons render their draggable constructions", async ({ page }) =
   expect(pageErrors).toEqual([]);
 });
 
+test("finite automata demo steps to a verdict", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/finite-automata");
+  await expect(page.getByRole("heading", { name: "Finite Automata", level: 1 })).toBeVisible();
+  // Default machine: divisible-by-3, sample input 1001 (= 9, accepted).
+  await expect(page.getByText(/remainder 0/)).toBeVisible();
+  for (let i = 0; i < 4; i++) {
+    await page.getByRole("button", { name: "Step", exact: true }).click();
+  }
+  await expect(page.getByText("✓ accepted")).toBeVisible();
+  await expect(page.getByText(/read 1001₂ = 9/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

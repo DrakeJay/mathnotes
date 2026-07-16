@@ -5,6 +5,7 @@ import AttentionDemo from "./AttentionDemo";
 import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
+import FiniteAutomataDemo from "./FiniteAutomataDemo";
 import GradientDescentDemo from "./GradientDescentDemo";
 import InscribedAngleDemo from "./InscribedAngleDemo";
 import ThalesDemo from "./ThalesDemo";
@@ -32,6 +33,7 @@ export const DEMO_NAMES = [
   "thales",
   "inscribed-angle",
   "equal-tangents",
+  "finite-automata",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -50,6 +52,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   thales: ThalesDemo,
   "inscribed-angle": InscribedAngleDemo,
   "equal-tangents": EqualTangentsDemo,
+  "finite-automata": FiniteAutomataDemo,
 };
 
 export default function DemoBlock({
