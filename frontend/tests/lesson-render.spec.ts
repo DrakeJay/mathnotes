@@ -113,6 +113,26 @@ test("stack machine steps brackets to balanced and computes RPN", async ({ page 
   expect(pageErrors).toEqual([]);
 });
 
+test("call-stack demo runs factorial and overflows on infinite recursion", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/stack-in-memory");
+  await expect(page.getByRole("heading", { name: "The Stack in Memory", level: 1 })).toBeVisible();
+  // factorial(4): 4 pushes + 4 pops = 8 steps to the result.
+  for (let i = 0; i < 8; i++) {
+    await page.getByRole("button", { name: "Step", exact: true }).click();
+  }
+  await expect(page.getByText("✓ factorial(4) = 24")).toBeVisible();
+
+  // Infinite recursion hits the limit.
+  await page.locator("select").last().selectOption("2");
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(page.getByText("✗ STACK OVERFLOW")).toBeVisible({ timeout: 10_000 });
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

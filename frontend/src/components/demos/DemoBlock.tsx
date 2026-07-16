@@ -3,6 +3,7 @@
 import ActivationFunctionsDemo from "./ActivationFunctionsDemo";
 import AttentionDemo from "./AttentionDemo";
 import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
+import CallStackDemo from "./CallStackDemo";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
 import FiniteAutomataDemo from "./FiniteAutomataDemo";
@@ -36,6 +37,7 @@ export const DEMO_NAMES = [
   "equal-tangents",
   "finite-automata",
   "stack-machine",
+  "call-stack",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -56,6 +58,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "equal-tangents": EqualTangentsDemo,
   "finite-automata": FiniteAutomataDemo,
   "stack-machine": StackMachineDemo,
+  "call-stack": CallStackDemo,
 };
 
 export default function DemoBlock({
