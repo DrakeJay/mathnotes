@@ -4,8 +4,11 @@ import ActivationFunctionsDemo from "./ActivationFunctionsDemo";
 import AttentionDemo from "./AttentionDemo";
 import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import DotProductDemo from "./DotProductDemo";
-import TransformerArchitectureDiagram from "./TransformerArchitectureDiagram";
+import EqualTangentsDemo from "./EqualTangentsDemo";
 import GradientDescentDemo from "./GradientDescentDemo";
+import InscribedAngleDemo from "./InscribedAngleDemo";
+import ThalesDemo from "./ThalesDemo";
+import TransformerArchitectureDiagram from "./TransformerArchitectureDiagram";
 import LinearTransformDemo from "./LinearTransformDemo";
 import MomentumDemo from "./MomentumDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
@@ -26,6 +29,9 @@ export const DEMO_NAMES = [
   "attention",
   "attention-pipeline",
   "transformer-architecture",
+  "thales",
+  "inscribed-angle",
+  "equal-tangents",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -41,6 +47,9 @@ const DEMOS: Record<string, React.ComponentType> = {
   attention: AttentionDemo,
   "attention-pipeline": AttentionPipelineDiagram,
   "transformer-architecture": TransformerArchitectureDiagram,
+  thales: ThalesDemo,
+  "inscribed-angle": InscribedAngleDemo,
+  "equal-tangents": EqualTangentsDemo,
 };
 
 export default function DemoBlock({

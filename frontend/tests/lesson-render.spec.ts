@@ -56,6 +56,24 @@ test("attention lesson renders its interactive demo", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
+test("geometry lessons render their draggable constructions", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/thales-theorem");
+  await expect(page.getByRole("heading", { name: "Thales' Theorem", level: 1 })).toBeVisible();
+  // Wherever C sits, the demo must report a right angle.
+  await expect(page.getByText(/∠ACB = α \+ β = 90\.0°/)).toBeVisible();
+
+  await page.goto("/lessons/inscribed-angle-theorem");
+  await expect(page.getByText(/ratio = 2\.00/)).toBeVisible();
+
+  await page.goto("/lessons/equal-tangent-theorem");
+  await expect(page.getByText(/\|PT₁\| = \|PT₂\|/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(
