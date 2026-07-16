@@ -110,6 +110,11 @@ TOPICS = [
                 "title": "Finite Automata",
                 "summary": "The simplest machines that compute: states and transitions, a three-state machine that does number theory, and the sharp limit of finite memory.",
             },
+            {
+                "slug": "stacks",
+                "title": "Stacks",
+                "summary": "Last-in-first-out memory: matching brackets, evaluating expressions without parentheses, powering recursion — and upgrading finite automata past the aⁿbⁿ wall.",
+            },
         ],
     },
 ]
