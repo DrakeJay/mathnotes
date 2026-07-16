@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(12 lessons across 6 topics).
+(13 lessons across 7 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -84,6 +84,7 @@ Available demos:
 | `finite-automata` | Step a DFA through input on a live state diagram | browser |
 | `stack-machine` | Brackets, aⁿbⁿ, and RPN evaluated on a live stack | browser |
 | `call-stack` | Recursion as stack frames in RAM, incl. a live stack overflow | browser |
+| `logic-gates` | Flippable circuits: gate explorer, XOR from NANDs, adders | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |
