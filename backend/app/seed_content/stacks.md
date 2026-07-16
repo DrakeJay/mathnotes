@@ -36,7 +36,7 @@ The third machine above computes **postfix** (reverse Polish) notation: operands
 
 ## The call stack
 
-Every running program uses one giant stack constantly. When a function calls another, the caller's state is *pushed*; when the callee returns, it's *popped* — last called, first returned. Recursion is nothing but this stack at work, and the famous **stack overflow** error is literally this stack running out of room. Nested structure — brackets, function calls, HTML tags, clauses in a sentence — is stack-shaped, and that's why the stack is the data structure for parsing.
+Every running program uses one giant stack constantly. When a function calls another, the caller's state is *pushed*; when the callee returns, it's *popped* — last called, first returned. Recursion is nothing but this stack at work, and the famous **stack overflow** error is literally this stack running out of room. Nested structure — brackets, function calls, HTML tags, clauses in a sentence — is stack-shaped, and that's why the stack is the data structure for parsing. ([The Stack in Memory](/lessons/stack-in-memory) shows these frames living at real addresses.)
 
 ## Pushdown automata: the wall comes down
 

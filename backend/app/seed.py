@@ -117,6 +117,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "systems",
+        "title": "Data Structures & Memory",
+        "description": "How data actually lives in a machine — bytes, pointers, and the structures built on them.",
+        "position": 6,
+        "lessons": [
+            {
+                "slug": "stack-in-memory",
+                "title": "The Stack in Memory",
+                "summary": "From LIFO abstraction to bytes: array-plus-pointer implementations, call frames and return addresses, stack vs. heap, and why the crash is called a stack overflow.",
+            },
+        ],
+    },
 ]
 
 
