@@ -76,6 +76,29 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "geometry",
+        "title": "Classical Geometry",
+        "description": "Timeless results from Euclidean geometry, made draggable.",
+        "position": 4,
+        "lessons": [
+            {
+                "slug": "thales-theorem",
+                "title": "Thales' Theorem",
+                "summary": "Every point of a circle sees the diameter at a right angle — proved with two isosceles triangles, 2,600 years ago.",
+            },
+            {
+                "slug": "inscribed-angle-theorem",
+                "title": "The Inscribed Angle Theorem",
+                "summary": "An inscribed angle is half the central angle on the same arc — so a whole arc of points sees a chord at the same angle.",
+            },
+            {
+                "slug": "equal-tangent-theorem",
+                "title": "The Equal Tangent Theorem",
+                "summary": "The two tangent segments from an outside point are exactly equal — two right triangles sharing a hypotenuse, plus a construction from Thales.",
+            },
+        ],
+    },
 ]
 
 
