@@ -77,7 +77,7 @@ test("geometry lessons render their draggable constructions", async ({ page }) =
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "The math behind machine learning" }),
+    page.getByRole("heading", { name: "Math, made interactive" }),
   ).toBeVisible();
   await expect(page.getByRole("link", { name: /Backpropagation/ })).toBeVisible();
 });

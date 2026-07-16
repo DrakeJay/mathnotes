@@ -16,11 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "MathNotes — The Math Behind Machine Learning",
+    default: "MathNotes — Interactive Mathematics",
     template: "%s · MathNotes",
   },
   description:
-    "Interactive lessons on the mathematics powering neural networks, with live demos computed by real NumPy code.",
+    "Interactive math lessons with live demos — classical geometry, calculus, and the mathematics behind machine learning.",
 };
 
 export default function RootLayout({
@@ -52,8 +52,8 @@ export default function RootLayout({
         <main className="w-full flex-1">{children}</main>
         <footer className="border-t border-hairline">
           <div className="mx-auto w-full max-w-5xl px-6 py-6 text-sm text-ink-3">
-            Built with Next.js, FastAPI, and PostgreSQL — every demo runs on
-            real NumPy math, live on the server.
+            Built with Next.js, FastAPI, and PostgreSQL — the training demos
+            run on real NumPy math, live on the server.
           </div>
         </footer>
       </body>

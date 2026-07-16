@@ -15,12 +15,12 @@ export default async function Home() {
     <div className="mx-auto w-full max-w-5xl px-6 py-12">
       <section className="mb-14 max-w-2xl">
         <h1 className="text-4xl font-semibold tracking-tight">
-          The math behind machine learning
+          Math, made interactive
         </h1>
         <p className="mt-4 text-lg text-ink-2">
-          Short lessons that build up the linear algebra and calculus inside
-          neural networks — with interactive demos powered by real NumPy code
-          running gradient descent and backpropagation on the server.
+          Short lessons on mathematics worth knowing — from Euclid&apos;s
+          circle theorems to the equations inside neural networks — each with
+          something to drag, plot, or train.
         </p>
       </section>
 

@@ -1,14 +1,16 @@
-# MathNotes — the math behind machine learning
+# MathNotes — interactive mathematics
 
 > **[GUIDE.md](GUIDE.md)** documents the project in depth: architecture,
 > step-by-step instructions for making changes, testing, deployment, and
 > troubleshooting.
 
-A full-stack learning platform for the mathematics inside neural networks.
-Lessons are written in Markdown with LaTeX and can embed **interactive demos
-whose math runs live on the server in NumPy** — real gradient descent on real
-loss surfaces, and a from-scratch multilayer perceptron trained with
-backpropagation while you watch.
+A full-stack platform of interactive math lessons — currently spanning
+classical geometry through the mathematics of neural networks and
+transformers. Lessons are written in Markdown with LaTeX and embed
+interactive demos: draggable geometric constructions in the browser, and
+**training demos whose math runs live on the server in NumPy** — real
+gradient descent on real loss surfaces, and a from-scratch multilayer
+perceptron trained with backpropagation while you watch.
 
 ## Stack
 
