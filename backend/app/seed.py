@@ -130,6 +130,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "logic",
+        "title": "Logic & Circuits",
+        "description": "Boolean algebra and the gates that turn it into hardware.",
+        "position": 7,
+        "lessons": [
+            {
+                "slug": "logic-gates",
+                "title": "Logic Gates",
+                "summary": "Truth tables, the universality of NAND, De Morgan's laws, and the half adder — how true and false become arithmetic.",
+            },
+        ],
+    },
 ]
 
 
