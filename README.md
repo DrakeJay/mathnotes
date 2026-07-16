@@ -44,7 +44,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(6 lessons across 3 topics).
+(9 lessons across 4 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -76,6 +76,9 @@ Available demos:
 | `attention` | Drag a token's query; attention weights + matrix, causal mask | browser |
 | `attention-pipeline` | Data-flow diagram of one attention layer (hover stages) | browser |
 | `transformer-architecture` | One block + the full GPT pipeline, as diagrams | browser |
+| `thales` | Drag C around a circle; the angle on the diameter stays 90° | browser |
+| `inscribed-angle` | Central vs. inscribed angle, all three points draggable | browser |
+| `equal-tangents` | Drag an external point; both tangent lengths stay equal | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |

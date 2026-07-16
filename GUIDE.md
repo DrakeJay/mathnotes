@@ -291,7 +291,10 @@ Keep a blank line above and below the tag. Unknown names render a helpful
 
 Current demos — client-side (math runs in the browser):
 `linear-transform`, `dot-product`, `activation-functions`, `tangent-line`,
-`softmax`, `attention`.
+`softmax`, `attention`, plus the diagrams `attention-pipeline` and
+`transformer-architecture`, and the geometry constructions `thales`,
+`inscribed-angle`, `equal-tangents` (shared helpers in
+`demos/geometry.ts`).
 Server-side (math runs in NumPy via `/api/ml/*`):
 `gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients`.
 Static diagrams (same embed mechanism): `attention-pipeline`,
