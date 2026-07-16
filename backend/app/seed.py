@@ -99,6 +99,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "computation",
+        "title": "Theory of Computation",
+        "description": "What machines can compute — automata, languages, and the limits of algorithms.",
+        "position": 5,
+        "lessons": [
+            {
+                "slug": "finite-automata",
+                "title": "Finite Automata",
+                "summary": "The simplest machines that compute: states and transitions, a three-state machine that does number theory, and the sharp limit of finite memory.",
+            },
+        ],
+    },
 ]
 
 
