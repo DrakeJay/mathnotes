@@ -243,5 +243,20 @@ test("home page lists the seeded curriculum", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Math, made interactive" }),
   ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Machine Learning" })).toBeVisible();
   await expect(page.getByRole("link", { name: /Backpropagation/ })).toBeVisible();
+});
+
+test("about page introduces Drake with GitHub and LinkedIn links", async ({ page }) => {
+  await page.goto("/about");
+  await expect(page.getByRole("heading", { name: "About", level: 1 })).toBeVisible();
+  await expect(page.getByText(/Drake Weller/).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /GitHub/ })).toHaveAttribute(
+    "href",
+    "https://github.com/drakejay",
+  );
+  await expect(page.getByRole("link", { name: /LinkedIn/ })).toHaveAttribute(
+    "href",
+    "https://linkedin.com/in/drakeweller222",
+  );
 });

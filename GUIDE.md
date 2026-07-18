@@ -118,6 +118,7 @@ math/
         │   ├── layout.tsx      Site shell: header/nav/footer, fonts, metadata
         │   ├── globals.css     Tailwind + design tokens (light AND dark)
         │   ├── page.tsx        Home: topic/lesson cards (server component)
+        │   ├── about/page.tsx  About Drake (bio, projects, GitHub/LinkedIn)
         │   ├── lessons/[slug]/page.tsx    Lesson page (server component)
         │   └── admin/
         │       ├── page.tsx                Login form or dashboard

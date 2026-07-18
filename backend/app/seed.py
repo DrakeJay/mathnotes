@@ -24,7 +24,7 @@ CONTENT_DIR = Path(__file__).parent / "seed_content"
 TOPICS = [
     {
         "slug": "foundations",
-        "title": "Foundations",
+        "title": "Machine Learning",
         "description": "The linear algebra and calculus every neural network is built on.",
         "position": 1,
         "lessons": [
@@ -216,6 +216,17 @@ def sync_seed_content(db: Session) -> None:
             db.add(topic)
             db.flush()
             print(f"seed: created topic {topic.slug}")
+        elif (
+            topic.title != topic_spec["title"]
+            or topic.description != topic_spec["description"]
+            or topic.position != topic_spec["position"]
+        ):
+            # Topics aren't editable in the admin UI, so the seed file is
+            # their source of truth — keep them in sync.
+            topic.title = topic_spec["title"]
+            topic.description = topic_spec["description"]
+            topic.position = topic_spec["position"]
+            print(f"seed: updated topic {topic.slug}")
         for position, lesson_spec in enumerate(topic_spec["lessons"], start=1):
             content = (CONTENT_DIR / f"{lesson_spec['slug']}.md").read_text()
             lesson = db.scalar(select(Lesson).where(Lesson.slug == lesson_spec["slug"]))

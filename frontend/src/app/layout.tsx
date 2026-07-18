@@ -43,6 +43,9 @@ export default function RootLayout({
               <Link href="/" className="hover:text-foreground">
                 Lessons
               </Link>
+              <Link href="/about" className="hover:text-foreground">
+                About
+              </Link>
               <Link href="/admin" className="hover:text-foreground">
                 Admin
               </Link>

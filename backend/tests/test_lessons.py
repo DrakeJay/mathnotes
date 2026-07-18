@@ -51,6 +51,21 @@ def test_create_lesson_rejects_unknown_topic(admin):
     assert res.status_code == 400
 
 
+def test_seed_sync_restores_topic_titles(admin):
+    from app.database import SessionLocal
+    from app.seed import sync_seed_content
+
+    topics = admin.get("/api/topics").json()
+    foundations = next(t for t in topics if t["slug"] == "foundations")
+    assert foundations["title"] == "Machine Learning"
+
+    admin.put(f"/api/topics/{foundations['id']}", json={"title": "Renamed"})
+    with SessionLocal() as db:
+        sync_seed_content(db)
+    topics = admin.get("/api/topics").json()
+    assert next(t for t in topics if t["slug"] == "foundations")["title"] == "Machine Learning"
+
+
 def test_seed_sync_recreates_missing_lessons(admin):
     from app.database import SessionLocal
     from app.seed import sync_seed_content
