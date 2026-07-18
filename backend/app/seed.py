@@ -156,6 +156,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "algorithms",
+        "title": "Algorithms",
+        "description": "Recipes for computing — searching, sorting, and the analysis that separates fast from slow.",
+        "position": 9,
+        "lessons": [
+            {
+                "slug": "search-algorithms",
+                "title": "Search Algorithms",
+                "summary": "Linear vs. binary search: why sorted data turns O(n) into O(log n), the invariant that keeps binary search honest, and why the logarithm can't be beaten.",
+            },
+        ],
+    },
 ]
 
 

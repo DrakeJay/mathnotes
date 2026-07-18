@@ -3,6 +3,7 @@
 import ActivationFunctionsDemo from "./ActivationFunctionsDemo";
 import AttentionDemo from "./AttentionDemo";
 import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
+import BinarySearchDemo from "./BinarySearchDemo";
 import CallStackDemo from "./CallStackDemo";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
@@ -42,6 +43,7 @@ export const DEMO_NAMES = [
   "call-stack",
   "logic-gates",
   "euclidean",
+  "binary-search",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -65,6 +67,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "call-stack": CallStackDemo,
   "logic-gates": LogicGatesDemo,
   euclidean: EuclideanDemo,
+  "binary-search": BinarySearchDemo,
 };
 
 export default function DemoBlock({

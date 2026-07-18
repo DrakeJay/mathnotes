@@ -172,6 +172,21 @@ test("euclidean demo tiles the rectangle down to the gcd", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
+test("search race: binary beats linear on the same target", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/search-algorithms");
+  await expect(page.getByRole("heading", { name: "Search Algorithms", level: 1 })).toBeVisible();
+  // Default target 58 lives at index 18: linear needs 19 probes, binary 3.
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(
+    page.getByText(/found 58 at index 18 — linear: 19 comparison\(s\), binary: 3/),
+  ).toBeVisible({ timeout: 15_000 });
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(
