@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(16 lessons across 9 topics).
+(17 lessons across 10 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -88,6 +88,8 @@ Available demos:
 | `euclidean` | gcd as squares tiling a rectangle, with Bézout at the end | browser |
 | `binary-search` | Linear vs. binary search racing on the same sorted array | browser |
 | `fibonacci` | The naive recursion tree vs. memoization, plus ratios → φ | browser |
+| `coin-flips` | Law of large numbers: the running proportion pins onto p | browser |
+| `galton-board` | Balls through pegs assemble the binomial / bell curve | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |

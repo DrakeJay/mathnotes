@@ -174,6 +174,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "probability",
+        "title": "Probability",
+        "description": "Reasoning about uncertainty — from coin flips to the bell curve.",
+        "position": 10,
+        "lessons": [
+            {
+                "slug": "probability",
+                "title": "Probability and the Law of Large Numbers",
+                "summary": "What the number between 0 and 1 means, why proportions converge while counts wander, and the Galton board assembling a bell curve out of coin flips.",
+            },
+        ],
+    },
 ]
 
 

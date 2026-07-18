@@ -5,6 +5,8 @@ import AttentionDemo from "./AttentionDemo";
 import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import BinarySearchDemo from "./BinarySearchDemo";
 import CallStackDemo from "./CallStackDemo";
+import CoinFlipsDemo from "./CoinFlipsDemo";
+import GaltonBoardDemo from "./GaltonBoardDemo";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
 import EuclideanDemo from "./EuclideanDemo";
@@ -46,6 +48,8 @@ export const DEMO_NAMES = [
   "euclidean",
   "binary-search",
   "fibonacci",
+  "coin-flips",
+  "galton-board",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -71,6 +75,8 @@ const DEMOS: Record<string, React.ComponentType> = {
   euclidean: EuclideanDemo,
   "binary-search": BinarySearchDemo,
   fibonacci: FibonacciDemo,
+  "coin-flips": CoinFlipsDemo,
+  "galton-board": GaltonBoardDemo,
 };
 
 export default function DemoBlock({

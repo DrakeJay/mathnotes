@@ -201,6 +201,24 @@ test("fibonacci demo shows the waste and memoization removes it", async ({ page 
   expect(pageErrors).toEqual([]);
 });
 
+test("probability lesson: coin flips converge, Galton board fills", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/probability");
+  await expect(
+    page.getByRole("heading", { name: "Probability and the Law of Large Numbers", level: 1 }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Flip 5,000" }).click();
+  await expect(page.getByText(/n = 5,000/)).toBeVisible();
+
+  await page.getByRole("button", { name: "Drop 200" }).click();
+  await expect(page.getByText(/200 ball\(s\)/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

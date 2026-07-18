@@ -25,12 +25,15 @@ export default function LineChart({
   yLabel,
   height = H,
   showTable = false,
+  endLabels = true,
 }: {
   series: Series[];
   xLabel: string;
   yLabel: string;
   height?: number;
   showTable?: boolean;
+  /** Direct labels at line ends; disable when series converge and would collide. */
+  endLabels?: boolean;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [hover, setHover] = useState<Hover>(null);
@@ -213,14 +216,16 @@ export default function LineChart({
                   stroke="var(--viz-surface)"
                   strokeWidth="2"
                 />
-                <text
-                  x={sx(last[0]) + 8}
-                  y={sy(last[1]) + 3.5}
-                  fontSize="10"
-                  fill="var(--foreground)"
-                >
-                  {series.length >= 2 ? s.name : formatNum(last[1])}
-                </text>
+                {endLabels && (
+                  <text
+                    x={sx(last[0]) + 8}
+                    y={sy(last[1]) + 3.5}
+                    fontSize="10"
+                    fill="var(--foreground)"
+                  >
+                    {series.length >= 2 ? s.name : formatNum(last[1])}
+                  </text>
+                )}
               </g>
             );
           })}
