@@ -143,6 +143,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "number-theory",
+        "title": "Number Theory",
+        "description": "Divisibility, remainders, and the ancient algorithms behind modern cryptography.",
+        "position": 8,
+        "lessons": [
+            {
+                "slug": "euclidean-algorithm",
+                "title": "The Euclidean Algorithm",
+                "summary": "The oldest algorithm still in use: gcd by repeated remainders, squares tiling a rectangle, Fibonacci worst cases, and Bézout's identity powering RSA.",
+            },
+        ],
+    },
 ]
 
 
