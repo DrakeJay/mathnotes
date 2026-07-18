@@ -187,6 +187,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "statistics",
+        "title": "Statistics",
+        "description": "Making sense of data — summarizing, estimating, and knowing when a signal is real.",
+        "position": 11,
+        "lessons": [
+            {
+                "slug": "descriptive-statistics",
+                "title": "Mean, Median, and Spread",
+                "summary": "The balance point vs. the middle voter, variance as average squared area — and why the mean/median split is secretly the L2/L1 loss split from machine learning.",
+            },
+        ],
+    },
 ]
 
 

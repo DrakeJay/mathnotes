@@ -219,6 +219,25 @@ test("probability lesson: coin flips converge, Galton board fills", async ({ pag
   expect(pageErrors).toEqual([]);
 });
 
+test("statistics demo: the billionaire pulls the mean but not the median", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/descriptive-statistics");
+  await expect(
+    page.getByRole("heading", { name: "Mean, Median, and Spread", level: 1 }),
+  ).toBeVisible();
+  // Symmetric default: mean and median both 50.
+  await expect(page.getByText(/mean and median agree/)).toBeVisible();
+  // The billionaire preset: mean 29.4 vs median 21.
+  await page.locator("select").last().selectOption("Outlier (the billionaire)");
+  await expect(page.getByText(/mean = 29\.4/)).toBeVisible();
+  await expect(page.getByText(/median = 21\.0/)).toBeVisible();
+  await expect(page.getByText(/pulled by the right tail/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

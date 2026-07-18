@@ -6,6 +6,7 @@ import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import BinarySearchDemo from "./BinarySearchDemo";
 import CallStackDemo from "./CallStackDemo";
 import CoinFlipsDemo from "./CoinFlipsDemo";
+import DescriptiveStatsDemo from "./DescriptiveStatsDemo";
 import GaltonBoardDemo from "./GaltonBoardDemo";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
@@ -50,6 +51,7 @@ export const DEMO_NAMES = [
   "fibonacci",
   "coin-flips",
   "galton-board",
+  "descriptive-stats",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -77,6 +79,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   fibonacci: FibonacciDemo,
   "coin-flips": CoinFlipsDemo,
   "galton-board": GaltonBoardDemo,
+  "descriptive-stats": DescriptiveStatsDemo,
 };
 
 export default function DemoBlock({
