@@ -295,7 +295,7 @@ Current demos — client-side (math runs in the browser):
 `transformer-architecture`, and the geometry constructions `thales`,
 `inscribed-angle`, `equal-tangents` (shared helpers in
 `demos/geometry.ts`), the steppable machine runners `finite-automata`,
-`stack-machine`, and `call-stack`, the `logic-gates` circuit playground, the `euclidean` gcd tiling, and the `binary-search` race.
+`stack-machine`, and `call-stack`, the `logic-gates` circuit playground, the `euclidean` gcd tiling, the `binary-search` race, and the `fibonacci` recursion tree.
 Server-side (math runs in NumPy via `/api/ml/*`):
 `gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients`.
 Static diagrams (same embed mechanism): `attention-pipeline`,

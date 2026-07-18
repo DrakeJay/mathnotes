@@ -187,6 +187,20 @@ test("search race: binary beats linear on the same target", async ({ page }) => 
   expect(pageErrors).toEqual([]);
 });
 
+test("fibonacci demo shows the waste and memoization removes it", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/fibonacci");
+  await expect(page.getByRole("heading", { name: "Fibonacci Numbers", level: 1 })).toBeVisible();
+  // n = 6 naive: 25 calls, 7 distinct.
+  await expect(page.getByText(/naive recursion: 25 calls, but only 7 distinct/)).toBeVisible();
+  await page.getByText("memoize (cache every result)").click();
+  await expect(page.getByText(/memoized: 7 computations \+ 4 cache hits/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

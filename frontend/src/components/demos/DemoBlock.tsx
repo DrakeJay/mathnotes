@@ -8,6 +8,7 @@ import CallStackDemo from "./CallStackDemo";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
 import EuclideanDemo from "./EuclideanDemo";
+import FibonacciDemo from "./FibonacciDemo";
 import FiniteAutomataDemo from "./FiniteAutomataDemo";
 import GradientDescentDemo from "./GradientDescentDemo";
 import InscribedAngleDemo from "./InscribedAngleDemo";
@@ -44,6 +45,7 @@ export const DEMO_NAMES = [
   "logic-gates",
   "euclidean",
   "binary-search",
+  "fibonacci",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -68,6 +70,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "logic-gates": LogicGatesDemo,
   euclidean: EuclideanDemo,
   "binary-search": BinarySearchDemo,
+  fibonacci: FibonacciDemo,
 };
 
 export default function DemoBlock({

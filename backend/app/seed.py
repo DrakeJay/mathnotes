@@ -154,6 +154,11 @@ TOPICS = [
                 "title": "The Euclidean Algorithm",
                 "summary": "The oldest algorithm still in use: gcd by repeated remainders, squares tiling a rectangle, Fibonacci worst cases, and Bézout's identity powering RSA.",
             },
+            {
+                "slug": "fibonacci",
+                "title": "Fibonacci Numbers",
+                "summary": "The two-step recurrence hiding the golden ratio: Binet's formula, ratios converging to φ, and the recursion tree that teaches dynamic programming.",
+            },
         ],
     },
     {
