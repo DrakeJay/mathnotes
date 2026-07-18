@@ -154,6 +154,24 @@ test("logic gates demo computes AND and adds with the half adder", async ({ page
   expect(pageErrors).toEqual([]);
 });
 
+test("euclidean demo tiles the rectangle down to the gcd", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/euclidean-algorithm");
+  await expect(
+    page.getByRole("heading", { name: "The Euclidean Algorithm", level: 1 }),
+  ).toBeVisible();
+  // Default 252 × 105: three division steps to gcd 21.
+  for (let i = 0; i < 3; i++) {
+    await page.getByRole("button", { name: "Step", exact: true }).click();
+  }
+  await expect(page.getByText(/21 in 3 step\(s\)/)).toBeVisible();
+  await expect(page.getByText(/Bézout: 252·\(-2\) \+ 105·5 = 21/)).toBeVisible();
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page lists the seeded curriculum", async ({ page }) => {
   await page.goto("/");
   await expect(

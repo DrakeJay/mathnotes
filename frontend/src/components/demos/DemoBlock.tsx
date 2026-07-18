@@ -6,6 +6,7 @@ import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import CallStackDemo from "./CallStackDemo";
 import DotProductDemo from "./DotProductDemo";
 import EqualTangentsDemo from "./EqualTangentsDemo";
+import EuclideanDemo from "./EuclideanDemo";
 import FiniteAutomataDemo from "./FiniteAutomataDemo";
 import GradientDescentDemo from "./GradientDescentDemo";
 import InscribedAngleDemo from "./InscribedAngleDemo";
@@ -40,6 +41,7 @@ export const DEMO_NAMES = [
   "stack-machine",
   "call-stack",
   "logic-gates",
+  "euclidean",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -62,6 +64,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "stack-machine": StackMachineDemo,
   "call-stack": CallStackDemo,
   "logic-gates": LogicGatesDemo,
+  euclidean: EuclideanDemo,
 };
 
 export default function DemoBlock({
