@@ -20,6 +20,7 @@ import ThalesDemo from "./ThalesDemo";
 import TransformerArchitectureDiagram from "./TransformerArchitectureDiagram";
 import LinearTransformDemo from "./LinearTransformDemo";
 import LogicGatesDemo from "./LogicGatesDemo";
+import LSystemsDemo from "./LSystemsDemo";
 import MomentumDemo from "./MomentumDemo";
 import NetworkGameDemo from "./NetworkGameDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
@@ -28,6 +29,7 @@ import ProjectileDemo from "./ProjectileDemo";
 import SoftmaxDemo from "./SoftmaxDemo";
 import StackMachineDemo from "./StackMachineDemo";
 import TangentLineDemo from "./TangentLineDemo";
+import TurtlePlaygroundDemo from "./TurtlePlaygroundDemo";
 import VanishingGradientsDemo from "./VanishingGradientsDemo";
 
 export const DEMO_NAMES = [
@@ -49,6 +51,8 @@ export const DEMO_NAMES = [
   "inscribed-angle",
   "equal-tangents",
   "finite-automata",
+  "turtle-playground",
+  "l-systems",
   "stack-machine",
   "call-stack",
   "logic-gates",
@@ -81,6 +85,8 @@ const DEMOS: Record<string, React.ComponentType> = {
   "inscribed-angle": InscribedAngleDemo,
   "equal-tangents": EqualTangentsDemo,
   "finite-automata": FiniteAutomataDemo,
+  "turtle-playground": TurtlePlaygroundDemo,
+  "l-systems": LSystemsDemo,
   "stack-machine": StackMachineDemo,
   "call-stack": CallStackDemo,
   "logic-gates": LogicGatesDemo,

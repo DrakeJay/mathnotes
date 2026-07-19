@@ -378,3 +378,36 @@ test("derivative grapher: presets count stationary points, drawing replaces f", 
 
   expect(pageErrors).toEqual([]);
 });
+
+test("turtle lesson: the playground walks programs, l-systems rewrite and grow", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/turtle-lsystems");
+  await expect(
+    page.getByRole("heading", { name: "Turtle Geometry and L-Systems", level: 1 }),
+  ).toBeVisible();
+
+  // Playground: the default square program is 4 segments ending where it began.
+  await expect(page.getByText("Drive the turtle")).toBeVisible();
+  await expect(page.getByLabel("path segments")).toHaveText(/4/);
+  await expect(page.getByLabel("turtle heading")).toHaveText(/0°/);
+  await page.getByRole("textbox", { name: "turtle program" }).fill("F+F");
+  await expect(page.getByLabel("path segments")).toHaveText(/2/);
+  await expect(page.getByLabel("turtle heading")).toHaveText(/180°/);
+
+  // L-systems: Koch at n=3 is 3·4³ = 192 segments; one more iteration ×4.
+  await expect(page.getByText("Grow a fractal from a rewriting rule")).toBeVisible();
+  const segments = page.getByLabel("segments", { exact: true });
+  await expect(segments).toHaveText(/192/);
+  await page.getByRole("slider", { name: "iterations" }).press("ArrowRight");
+  await expect(segments).toHaveText(/768/);
+
+  // The dragon curve doubles per fold: 2^10 at its default depth.
+  await page.getByLabel("l-system preset").selectOption("dragon");
+  await expect(segments).toHaveText(/1024/);
+
+  expect(pageErrors).toEqual([]);
+});

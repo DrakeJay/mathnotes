@@ -120,6 +120,11 @@ TOPICS = [
                 "title": "Stacks",
                 "summary": "Last-in-first-out memory: matching brackets, evaluating expressions without parentheses, powering recursion — and upgrading finite automata past the aⁿbⁿ wall.",
             },
+            {
+                "slug": "turtle-lsystems",
+                "title": "Turtle Geometry and L-Systems",
+                "summary": "Geometry as instructions instead of coordinates: drive a turtle with a five-symbol language, then let rewriting rules grow snowflakes, dragons, and plants — and measure their fractional dimension.",
+            },
         ],
     },
     {
