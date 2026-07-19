@@ -16,6 +16,18 @@ You can watch the definition happen. The secant line through $(a, f(a))$ and $(a
 
 <demo name="tangent-line"></demo>
 
+The definition is also a program. Take $h$ small and compute the slope numerically — the two-sided version is more accurate:
+
+```python
+def f(x):
+    return x**2
+
+a, h = 1.5, 1e-6
+slope = (f(a + h) - f(a - h)) / (2 * h)   # ≈ 3.0, and f'(a) = 2a = 3 exactly
+```
+
+This *finite difference* trick can approximate any derivative — slowly. It's also the perfect referee: this site's test suite checks its backpropagation code by comparing every analytic gradient against exactly this computation.
+
 ## Many inputs: partial derivatives and the gradient
 
 A loss function doesn't have one input — it has one input **per weight**. For $f(x, y)$, the **partial derivative** $\frac{\partial f}{\partial x}$ asks the same sensitivity question while holding $y$ frozen.

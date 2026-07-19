@@ -67,3 +67,47 @@ body {
   overflow-y: hidden;
   padding: 2px 0;
 }
+
+/* Code blocks: card surface in both themes (overriding the typography
+   plugin's fixed dark pre), with highlight.js tokens mapped to the site's
+   series palette — the CSS variables already swap for dark mode. */
+.prose pre {
+  background: var(--surface-card);
+  color: var(--foreground);
+  border: 1px solid var(--hairline);
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal {
+  color: var(--series-violet);
+}
+.hljs-string,
+.hljs-doctag {
+  color: var(--series-aqua);
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet {
+  color: var(--series-blue);
+}
+.hljs-title,
+.hljs-section,
+.hljs-built_in,
+.hljs-name {
+  color: var(--series-red);
+}
+.hljs-params,
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable {
+  color: var(--foreground);
+}
+.hljs-meta,
+.hljs-operator {
+  color: var(--ink-secondary);
+}

@@ -54,6 +54,29 @@ $$
 
 Notice the recipe: **forward to compute and cache, backward to propagate $\boldsymbol{\delta}$, multiply cached activations by errors to get gradients.** One forward pass, one backward pass, every gradient in the network.
 
+Here are the four equations as code — this is (lightly trimmed) the actual NumPy that powers the demo below, [straight from this site's backend](https://github.com/DrakeJay/mathnotes/blob/main/backend/app/routers/ml.py):
+
+```python
+# forward pass: cache every pre-activation z and activation a
+activations, zs = [X], []
+a = X
+for l in range(L):
+    z = a @ W[l] + b[l]
+    zs.append(z)
+    a = sigmoid(z) if l == L - 1 else act(z)
+    activations.append(a)
+
+# backward pass
+delta = (activations[-1] - y) / n                  # eq. 1: output error p − y
+for l in reversed(range(L)):
+    dW[l] = activations[l].T @ delta               # eq. 3: weight gradients
+    db[l] = delta.sum(axis=0)                      # eq. 4: bias gradients
+    if l > 0:
+        delta = (delta @ W[l].T) * act_prime(zs[l - 1])   # eq. 2: flow backward
+```
+
+Fifteen lines. Every deep-learning framework is an industrial-strength elaboration of this loop.
+
 ## Why this is a big deal
 
 The naive alternative — nudge each weight, rerun the network, measure the loss change — costs one forward pass *per weight*. A million weights, a million forward passes, per training step. Backprop gets every gradient for the price of about *two* forward passes, no matter how many weights there are. This asymmetry (formally: *reverse-mode automatic differentiation*) is what makes training deep networks feasible at all.

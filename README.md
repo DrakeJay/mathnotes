@@ -65,6 +65,7 @@ Lessons are Markdown stored in Postgres, edited in the browser at `/admin`
 - `$x^2$` inline math, `$$ ... $$` display math (KaTeX)
 - GitHub-flavored Markdown (tables, lists, etc.)
 - `<demo name="gradient-descent"></demo>` embeds an interactive demo
+- ` ```python ` fenced blocks get syntax highlighting (Python registered)
 
 Available demos:
 

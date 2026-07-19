@@ -79,6 +79,24 @@ $$
 
 The gradient of the loss with respect to each logit is just *predicted probability minus truth* — a vector pointing from the answer toward the guess. No vanishing factors, no saturation terms: even when the softmax is badly saturated and confidently wrong, the gradient stays large exactly when the error is large. This clean pairing is why softmax + cross-entropy is the default output layer for classification, and it's the multi-class version of the $\delta^{(\text{out})} = p - y$ you already met.
 
+The whole section, as code — including the max-subtraction stability trick and the one-line gradient:
+
+```python
+import numpy as np
+
+def softmax(z, T=1.0):
+    z = z / T
+    e = np.exp(z - z.max())      # shift-invariance = numerical stability, free
+    return e / e.sum()
+
+logits = np.array([2.0, 0.5, -1.0, -3.0])
+p = softmax(logits)              # [0.78, 0.17, 0.04, 0.005]
+
+y = np.array([1.0, 0, 0, 0])     # one-hot truth: class 0
+loss = -np.log(p @ y)            # cross-entropy = −log p_true
+grad = p - y                     # the whole backward pass of this layer
+```
+
 ## Key takeaways
 
 - Softmax turns arbitrary logits into a probability distribution; only logit *differences* matter.

@@ -162,6 +162,7 @@ math/
    - `remark-math` finds `$...$` / `$$...$$` → `rehype-katex` typesets them
    - `remark-gfm` handles tables/lists
    - `rehype-raw` parses raw HTML including `<demo name="...">` tags
+   - `rehype-highlight` colors ```python fences (token theme in globals.css)
    - The `components` map turns each `demo` element into `<DemoBlock>`
 6. HTML streams to the browser; interactive demo components hydrate and run.
 

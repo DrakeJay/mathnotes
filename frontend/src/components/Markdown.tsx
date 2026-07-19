@@ -1,10 +1,12 @@
 "use client";
 
+import python from "highlight.js/lib/languages/python";
 import ReactMarkdown, { type Components, type ExtraProps } from "react-markdown";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
+import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import DemoBlock from "./demos/DemoBlock";
 
 /* CommonMark treats `<demo …></demo>` as inline HTML, so react-markdown wraps
@@ -39,7 +41,12 @@ export default function Markdown({
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeRaw, rehypeKatex]}
+      rehypePlugins={[
+        rehypeRaw,
+        rehypeKatex,
+        // Only Python is registered — fence code blocks as ```python.
+        [rehypeHighlight, { languages: { python }, detect: false }],
+      ]}
       components={components}
     >
       {content}

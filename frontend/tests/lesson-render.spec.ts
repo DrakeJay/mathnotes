@@ -1,5 +1,24 @@
 import { expect, test } from "@playwright/test";
 
+test("ML lessons render highlighted Python code examples", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/backpropagation");
+  const code = page.locator("code.hljs.language-python").first();
+  await expect(code).toBeVisible();
+  await expect(code).toContainText("delta = (activations[-1] - y) / n");
+  // Tokens actually got colored, not just wrapped.
+  await expect(code.locator(".hljs-keyword").first()).toBeVisible();
+
+  await page.goto("/lessons/attention");
+  await expect(page.locator("code.hljs.language-python").first()).toContainText(
+    "def attention(Q, K, V",
+  );
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("lesson page renders KaTeX math and a live server-computed demo", async ({
   page,
 }) => {

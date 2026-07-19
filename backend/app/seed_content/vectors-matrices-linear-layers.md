@@ -49,6 +49,22 @@ $$
 
 If the layer has $m$ neurons and the input has $n$ features, then $W$ is an $m \times n$ matrix, and it maps an $n$-dimensional vector to an $m$-dimensional one. **Keeping track of shapes like this is half of deep learning in practice.**
 
+In NumPy the whole story is three lines — one dot product, then a matrix that batches four of them:
+
+```python
+import numpy as np
+
+x = np.array([1.0, 2.0, -1.0])      # one input: 3 features
+w = np.array([0.5, -1.0, 2.0])      # one neuron's weights
+
+z = w @ x + 0.1                     # dot product + bias: one neuron fires
+
+W = np.random.randn(4, 3) * 0.1     # 4 neurons stacked as rows: a layer
+z = W @ x                           # four dot products in one matmul, shape (4,)
+```
+
+Every dense layer in every framework is this line — `W @ x + b` — wearing different clothes.
+
 ## A matrix is also a transformation of space
 
 There is a second, more geometric way to see $W\mathbf{x}$: the matrix *moves every point in space* — rotating, stretching, shearing, or flipping it. The columns of $W$ tell you exactly where the basis vectors land.

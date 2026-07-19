@@ -10,7 +10,22 @@ $$
 
 where $\boldsymbol{\theta}$ is the vector of **all** parameters (weights and biases) and $\eta$ (eta) is the **learning rate** — the single most important hyperparameter in deep learning.
 
-That's the whole algorithm. Everything interesting is in how it *behaves*.
+That's the whole algorithm — small enough to write out completely:
+
+```python
+import numpy as np
+
+def grad(x, y):                       # gradient of L = 0.5·x² + 1.5·y²
+    return np.array([x, 3 * y])
+
+theta = np.array([-3.4, 2.6])         # start somewhere on the surface
+lr = 0.1                              # the learning rate η
+
+for _ in range(60):
+    theta = theta - lr * grad(*theta) # step downhill
+```
+
+The demo below runs literally this loop on the server ([see the source](https://github.com/DrakeJay/mathnotes/blob/main/backend/app/routers/ml.py)). Everything interesting is in how it *behaves*.
 
 ## Try it
 

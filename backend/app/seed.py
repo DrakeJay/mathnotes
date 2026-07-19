@@ -14,7 +14,7 @@ also removing its entry below means it comes back on the next startup.
 
 from pathlib import Path
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from .models import Lesson, Topic
@@ -204,6 +204,7 @@ TOPICS = [
 
 
 def sync_seed_content(db: Session) -> None:
+    refreshed: list[str] = []
     for topic_spec in TOPICS:
         topic = db.scalar(select(Topic).where(Topic.slug == topic_spec["slug"]))
         if topic is None:
@@ -248,8 +249,19 @@ def sync_seed_content(db: Session) -> None:
             if lesson.content != content or lesson.summary != lesson_spec["summary"]:
                 lesson.content = content
                 lesson.summary = lesson_spec["summary"]
+                refreshed.append(lesson_spec["slug"])
                 print(f"seed: refreshed lesson {lesson_spec['slug']}")
     db.commit()
+    # Pin updated_at back to created_at for refreshed lessons: a seed refresh
+    # must not mark a lesson as hand-edited, or the next refresh would skip
+    # it forever. Done as an explicit UPDATE so onupdate can't interfere.
+    if refreshed:
+        db.execute(
+            update(Lesson)
+            .where(Lesson.slug.in_(refreshed))
+            .values(updated_at=Lesson.created_at)
+        )
+        db.commit()
 
 
 if __name__ == "__main__":

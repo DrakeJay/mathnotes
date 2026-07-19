@@ -54,7 +54,21 @@ $$
 \operatorname{Attention}(Q, K, V) = \operatorname{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 $$
 
-Notice what it's made of: two matrix multiplications and a softmax. Nothing you haven't already met. Here is the whole computation as a pipeline — hover any stage:
+Notice what it's made of: two matrix multiplications and a softmax. Nothing you haven't already met — which a few lines of NumPy make undeniable:
+
+```python
+import numpy as np
+
+def attention(Q, K, V, causal=False):
+    scores = Q @ K.T / np.sqrt(K.shape[-1])          # dot products, scaled
+    if causal:
+        scores[np.triu_indices_from(scores, k=1)] = -np.inf   # mask the future
+    e = np.exp(scores - scores.max(axis=-1, keepdims=True))
+    A = e / e.sum(axis=-1, keepdims=True)            # row-wise softmax
+    return A @ V                                     # weighted average of values
+```
+
+Swap `-np.inf` masking on and you have GPT-style attention; leave it off and you have a text encoder's. Here is the same computation as a pipeline — hover any stage:
 
 <demo name="attention-pipeline"></demo>
 

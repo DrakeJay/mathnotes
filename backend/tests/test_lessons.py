@@ -101,4 +101,8 @@ def test_seed_sync_preserves_hand_edited_lessons(admin):
         )
         db.commit()
         sync_seed_content(db)
-    assert "update rule" in admin.get("/api/lessons/gradient-descent").json()["content"]
+    restored = admin.get("/api/lessons/gradient-descent").json()
+    assert "update rule" in restored["content"]
+    # A seed refresh must NOT mark the lesson as hand-edited — otherwise the
+    # next refresh would skip it forever.
+    assert restored["updated_at"] == restored["created_at"]
