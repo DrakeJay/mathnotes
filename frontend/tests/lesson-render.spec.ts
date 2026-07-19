@@ -238,13 +238,21 @@ test("statistics demo: the billionaire pulls the mean but not the median", async
   expect(pageErrors).toEqual([]);
 });
 
-test("home page lists the seeded curriculum", async ({ page }) => {
+test("home page groups the curriculum and showcases projects", async ({ page }) => {
   await page.goto("/");
   await expect(
     page.getByRole("heading", { name: "Math, made interactive" }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Machine Learning" })).toBeVisible();
+  // The three curriculum groups plus the projects section.
+  for (const name of ["Machine Learning", "Computing", "Mathematics", "Projects"]) {
+    await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
+  }
   await expect(page.getByRole("link", { name: /Backpropagation/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /LameChat/ })).toHaveAttribute(
+    "href",
+    "https://github.com/drakejay/LameChat",
+  );
+  await expect(page.getByText(/lessons across .* topics/)).toBeVisible();
 });
 
 test("about page introduces Drake with GitHub and LinkedIn links", async ({ page }) => {
