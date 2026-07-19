@@ -6,6 +6,7 @@ import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import BinarySearchDemo from "./BinarySearchDemo";
 import CallStackDemo from "./CallStackDemo";
 import CoinFlipsDemo from "./CoinFlipsDemo";
+import DerivativeGrapherDemo from "./DerivativeGrapherDemo";
 import DescriptiveStatsDemo from "./DescriptiveStatsDemo";
 import GaltonBoardDemo from "./GaltonBoardDemo";
 import DotProductDemo from "./DotProductDemo";
@@ -34,6 +35,7 @@ export const DEMO_NAMES = [
   "dot-product",
   "activation-functions",
   "tangent-line",
+  "derivative-grapher",
   "gradient-descent",
   "momentum",
   "neural-network",
@@ -65,6 +67,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "dot-product": DotProductDemo,
   "activation-functions": ActivationFunctionsDemo,
   "tangent-line": TangentLineDemo,
+  "derivative-grapher": DerivativeGrapherDemo,
   "gradient-descent": GradientDescentDemo,
   momentum: MomentumDemo,
   "neural-network": NeuralNetworkDemo,

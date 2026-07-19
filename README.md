@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(20 lessons across 12 topics).
+(21 lessons across 13 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -75,6 +75,7 @@ Available demos:
 | `dot-product` | Draggable vectors: dot product, angle, projection | browser |
 | `activation-functions` | sigmoid/tanh/ReLU and their derivatives | browser |
 | `tangent-line` | Secant → tangent as h → 0 (the limit definition) | browser |
+| `derivative-grapher` | Draw any function freehand; f′ traces itself underneath | browser |
 | `softmax` | Logits → probabilities with temperature; live cross-entropy | browser |
 | `attention` | Drag a token's query; attention weights + matrix, causal mask | browser |
 | `attention-pipeline` | Data-flow diagram of one attention layer (hover stages) | browser |

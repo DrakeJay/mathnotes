@@ -21,8 +21,8 @@ const GROUPS: { id: string; title: string; blurb: string; slugs: string[] }[] = 
   {
     id: "mathematics",
     title: "Mathematics",
-    blurb: "Geometry, numbers, chance, and data.",
-    slugs: ["geometry", "number-theory", "probability", "statistics"],
+    blurb: "Geometry, calculus, numbers, chance, and data.",
+    slugs: ["geometry", "calculus", "number-theory", "probability", "statistics"],
   },
   {
     id: "physics",

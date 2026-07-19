@@ -206,6 +206,19 @@ TOPICS = [
         ],
     },
     {
+        "slug": "calculus",
+        "title": "Calculus",
+        "description": "Change made precise — slopes, limits, and the machinery of smooth functions.",
+        "position": 13,
+        "lessons": [
+            {
+                "slug": "seeing-the-derivative",
+                "title": "Seeing the Derivative",
+                "summary": "Draw any function and watch its derivative trace itself: slopes as a shadow function, peaks as zero crossings, corners as jumps — plus the finite-difference trick behind it.",
+            },
+        ],
+    },
+    {
         "slug": "physics",
         "title": "Physics",
         "description": "Nature's laws, simulated — and the numerical methods that keep them honest.",

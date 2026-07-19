@@ -340,3 +340,41 @@ test("network game: a nudge lowers the loss, gradient descent beats par", async 
 
   expect(pageErrors).toEqual([]);
 });
+
+test("derivative grapher: presets count stationary points, drawing replaces f", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/seeing-the-derivative");
+  await expect(
+    page.getByRole("heading", { name: "Seeing the Derivative", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("Draw a function, get its derivative")).toBeVisible();
+
+  // sin x: its derivative (cos) crosses zero twice on [-3, 3].
+  const stationary = page.getByLabel("stationary points");
+  await expect(stationary).toHaveText(/: 2/);
+
+  // The bell curve has a single peak.
+  await page.getByLabel("Preset").selectOption("bell");
+  await expect(stationary).toHaveText(/: 1/);
+
+  // Draw a rising straight line across the whole panel: constant positive
+  // slope, so the derivative never crosses zero. The drag starts inside the
+  // plot, sweeps past both edges (bins clamp), and releases.
+  const svg = page.getByRole("img", { name: /derivative computed below/ });
+  await svg.scrollIntoViewIfNeeded();
+  const box = (await svg.boundingBox())!;
+  const yLow = box.y + box.height * 0.4255; // f = -1.5 in the top panel
+  const yHigh = box.y + box.height * 0.134; // f = +1.5
+  await page.mouse.move(box.x + box.width * 0.095, yLow);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.06, yLow); // clamp to left edge
+  await page.mouse.move(box.x + box.width * 0.99, yHigh, { steps: 30 });
+  await page.mouse.up();
+  await expect(stationary).toHaveText(/: 0/);
+
+  expect(pageErrors).toEqual([]);
+});

@@ -316,6 +316,7 @@ its kind):
 | Random simulators | `coin-flips`, `galton-board` | `CoinFlipsDemo` |
 | Animated physics (requestAnimationFrame) | `projectile-sim`, `orbit-sim` | `OrbitDemo` |
 | Playable games (levels, par, win state) | `network-game` | `NetworkGameDemo` |
+| Freehand drawing (pointer capture on SVG) | `derivative-grapher` | `DerivativeGrapherDemo` |
 | Static diagrams | `attention-pipeline`, `transformer-architecture` | `AttentionPipelineDiagram` |
 
 ### Charts and color (components/viz/)
