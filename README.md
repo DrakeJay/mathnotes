@@ -17,7 +17,7 @@ perceptron trained with backpropagation while you watch.
 | Layer | Technology |
 | --- | --- |
 | Frontend | Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · KaTeX |
-| Backend | FastAPI · SQLAlchemy 2 · NumPy · PyJWT |
+| Backend | FastAPI · SQLAlchemy 2 · Alembic · NumPy · bcrypt |
 | Database | PostgreSQL 16 (Docker) |
 
 ```
@@ -163,11 +163,15 @@ httpOnly. CI runs pytest and the frontend build on every push.
 ```
 GET    /api/topics                  topics with nested lesson summaries
 GET    /api/lessons/{slug}          full lesson content
-POST   /api/auth/login              {password} → {token}
-POST   /api/lessons                 create (Bearer token)   + PUT/DELETE /{id}
-POST   /api/topics                  create (Bearer token)   + PUT/DELETE /{id}
+POST   /api/auth/login              {password} → sets httpOnly session cookie
+POST   /api/auth/logout             revokes the session server-side
+GET    /api/auth/me                 {authenticated: bool}
+POST   /api/lessons                 create (needs session cookie)  + PUT/DELETE /{id}
+POST   /api/topics                  create (needs session cookie)  + PUT/DELETE /{id}
 POST   /api/ml/gradient-descent     {surface, learning_rate, steps} → path + grid
+POST   /api/ml/momentum             plain vs. heavy-ball descent, both runs
 POST   /api/ml/train-network        {dataset, hidden_layers, …} → boundary + loss curve
+POST   /api/ml/gradient-flow        per-layer |∂L/∂W| for sigmoid/tanh/relu
 ```
 
 ## Notes & next steps

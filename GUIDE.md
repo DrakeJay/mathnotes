@@ -97,7 +97,7 @@ math/
 │   │   ├── schemas.py          Pydantic request/response shapes
 │   │   ├── auth.py             bcrypt hashing, session create/verify/destroy
 │   │   ├── slugs.py            slugify + uniqueness helper
-│   │   ├── seed.py             First-boot curriculum + `--refresh` command
+│   │   ├── seed.py             Curriculum sync: TOPICS registry + rules
 │   │   ├── seed_content/       The seeded lessons as .md files
 │   │   ├── migrations.py       Runs `alembic upgrade head` programmatically
 │   │   └── routers/
@@ -138,6 +138,7 @@ math/
         └── lib/
             ├── api.ts          ★ Typed fetch helpers for every endpoint
             ├── auth.ts         useAuth() hook (session state via /me)
+            ├── showcase.ts     Curated GitHub projects for the home page
             └── types.ts        TypeScript mirrors of the API shapes
 ```
 
@@ -224,8 +225,9 @@ missing seed topics/lessons, refreshes never-edited ones) →
 - `topics 1─* lessons` (cascade delete), both with unique indexed `slug`
 - `users 1─* sessions` (cascade delete); `sessions.token_hash` stores the
   SHA-256 of the cookie token, never the token itself
-- `lessons.updated_at` auto-updates on edit — `seed.py --refresh` uses
-  `updated_at == created_at` to detect "never hand-edited"
+- `lessons.updated_at` auto-updates on admin edits; the seed sync uses
+  `updated_at == created_at` to mean "never hand-edited" (and pins the
+  marker back after its own refreshes so it stays meaningful)
 
 ### routers/ml.py — ML demo endpoints
 
@@ -255,10 +257,19 @@ can also be run manually:
 .venv/bin/python -m app.seed    # create missing lessons, refresh un-edited ones
 ```
 
-Rules: lessons edited in the admin UI are never overwritten (detected by
-`updated_at == created_at`); lessons present in `TOPICS` but missing from the
-database are created — which also means deleting a seeded lesson in the admin
-UI without removing its `TOPICS` entry brings it back on the next startup.
+The sync rules, in full:
+
+- **Lessons** missing from the database are created; lessons whose content
+  was never hand-edited (`updated_at == created_at`) are refreshed from the
+  seed file. After refreshing, the sync pins `updated_at` back to
+  `created_at` so a refresh never masquerades as a hand edit.
+- **Lessons edited in the admin UI are never overwritten.** To make such a
+  lesson follow the seed file again, reset its marker:
+  `UPDATE lessons SET updated_at = created_at WHERE slug = '<slug>'`.
+- **Topics** are fully owned by the seed file (the admin UI can't edit
+  them): titles, descriptions, and positions sync on every startup.
+- Deleting a seeded lesson in the admin UI without removing its `TOPICS`
+  entry brings it back on the next startup.
 
 ---
 
@@ -292,17 +303,19 @@ Some paragraph after.
 Keep a blank line above and below the tag. Unknown names render a helpful
 "available demos" box rather than crashing.
 
-Current demos — client-side (math runs in the browser):
-`linear-transform`, `dot-product`, `activation-functions`, `tangent-line`,
-`softmax`, `attention`, plus the diagrams `attention-pipeline` and
-`transformer-architecture`, and the geometry constructions `thales`,
-`inscribed-angle`, `equal-tangents` (shared helpers in
-`demos/geometry.ts`), the steppable machine runners `finite-automata`,
-`stack-machine`, and `call-stack`, the `logic-gates` circuit playground, the `euclidean` gcd tiling, the `binary-search` race, the `fibonacci` recursion tree, the probability simulators `coin-flips` and `galton-board`, the `descriptive-stats` dot plot, and the physics sims `projectile-sim` and `orbit-sim`.
-Server-side (math runs in NumPy via `/api/ml/*`):
-`gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients`.
-Static diagrams (same embed mechanism): `attention-pipeline`,
-`transformer-architecture`.
+Current embeds, by family (each family is a good template for new demos of
+its kind):
+
+| Family | Names | Template to copy |
+| --- | --- | --- |
+| Server-computed (NumPy via `/api/ml/*`) | `gradient-descent`, `momentum`, `neural-network`, `vanishing-gradients` | `MomentumDemo` |
+| Draggable constructions | `linear-transform`, `dot-product`, `tangent-line`, `thales`, `inscribed-angle`, `equal-tangents`, `descriptive-stats` | `DotProductDemo` + `demos/geometry.ts` |
+| Parameter explorers | `activation-functions`, `softmax`, `attention` | `SoftmaxDemo` |
+| Steppable machines (tape/Step/Run/Reset) | `finite-automata`, `stack-machine`, `call-stack`, `euclidean`, `binary-search` | `FiniteAutomataDemo` |
+| Toggled visualizers | `logic-gates`, `fibonacci` | `LogicGatesDemo` |
+| Random simulators | `coin-flips`, `galton-board` | `CoinFlipsDemo` |
+| Animated physics (requestAnimationFrame) | `projectile-sim`, `orbit-sim` | `OrbitDemo` |
+| Static diagrams | `attention-pipeline`, `transformer-architecture` | `AttentionPipelineDiagram` |
 
 ### Charts and color (components/viz/)
 
@@ -376,6 +389,50 @@ Machine quirks to remember:
 
 ## 7. Making changes step by step
 
+### 7.0 The full publishing workflow (lesson + demo, start to live)
+
+Every lesson on this site shipped through this exact sequence. Commands
+assume the local stack is running (§6) and `source ~/.nvm/nvm.sh` if needed.
+
+```bash
+# 1. WRITE — seed file + registration
+#    backend/app/seed_content/<slug>.md          (the lesson)
+#    backend/app/seed.py                         (TOPICS entry; new topic if needed)
+#    frontend/src/components/demos/MyDemo.tsx    (the demo — pick a template, §5)
+#    frontend/src/components/demos/DemoBlock.tsx (register the demo name)
+#    frontend/src/app/page.tsx                   (NEW TOPIC ONLY: add slug to GROUPS)
+
+# 2. SYNC + BACKEND TESTS
+cd backend
+.venv/bin/python -m app.seed          # creates/refreshes lessons in local DB
+.venv/bin/python -m pytest -q         # all green before touching the frontend
+
+# 3. BUILD + E2E
+cd ../frontend
+npm run build                         # catches type errors
+npm run test:e2e                      # add a spec for the new demo first (§8)
+
+# 4. LOOK AT IT — light AND dark mode, at /lessons/<slug>
+#    (a demo isn't done until you've seen it render)
+
+# 5. DOCS — add the demo row to README's table; update the lesson count;
+#    add the demo name to the family table in §5 of this file
+
+# 6. COMMIT + PUSH
+git add -A && git commit && git push  # CI runs pytest + build
+
+# 7. DEPLOY (backend first: the seed sync creates the lesson in prod)
+cd backend  && railway up --service backend --ci
+cd ../frontend && vercel --prod
+
+# 8. VERIFY PRODUCTION
+E2E_BASE_URL=https://nablanotes.vercel.app ADMIN_PASSWORD=<prod pw> npm run test:e2e
+```
+
+The production `ADMIN_PASSWORD` lives in Railway → backend → Variables.
+Content-only changes still need the backend deploy (that's what carries the
+seed files); demo/code changes need the frontend deploy.
+
 ### 7.1 Add or edit a lesson (content only — no code)
 
 1. Go to `/admin`, log in.
@@ -386,7 +443,13 @@ Machine quirks to remember:
    - Tables/lists: normal GitHub Markdown
    - Interactive demo: `<demo name="neural-network"></demo>` on its own
      line, blank lines around it
+   - Code: fenced ```` ```python ```` blocks get syntax highlighting
+     (only Python is registered)
+   - Cross-link lessons with plain links: `[the softmax lesson](/lessons/softmax-cross-entropy)`
 4. Save. The lesson is live immediately at `/lessons/<slug>`.
+
+Note: a lesson edited this way is marked *hand-edited* — the seed sync will
+never overwrite it again (see §4, seed.py, for how to undo that).
 
 ### 7.2 Change the seeded curriculum (survives a fresh database)
 
@@ -396,10 +459,14 @@ project itself:
 1. Edit or add a file in `backend/app/seed_content/<slug>.md`.
 2. If it's a **new** lesson, register it in the `TOPICS` list in
    `backend/app/seed.py` (slug, title, summary — position = list order).
-3. Restart the backend (the sync runs at startup), or run
-   `.venv/bin/python -m app.seed`. New lessons are created; lessons you've
-   hand-edited in the admin UI are never overwritten.
-4. Commit the seed files.
+3. If it's a **new topic**, add a whole `TOPICS` entry (slug, title,
+   description, next position) — **and add the topic's slug to a group in
+   the `GROUPS` config at the top of `frontend/src/app/page.tsx`**, or it
+   will render in the trailing "More" section of the home page.
+4. Restart the backend (the sync runs at startup), or run
+   `.venv/bin/python -m app.seed`. New topics/lessons are created; lessons
+   you've hand-edited in the admin UI are never overwritten.
+5. Commit the seed files (and `page.tsx` if a topic was added).
 
 ### 7.3 Create a client-side interactive demo
 
@@ -426,8 +493,22 @@ Example: a demo named `my-widget`.
 4. Style rules that keep it consistent: wrap in `DemoCard`; use
    `var(--series-blue)` etc. for data marks and `var(--viz-*)` for chart
    chrome (both themes work automatically); reuse `LineChart` where a line
-   chart fits; controls go in the `controls` prop (one row above charts).
-5. Verify: `npm run dev`, view a lesson using it, check light AND dark mode
+   chart fits; controls go in the `controls` prop (one row above charts);
+   live numeric readouts go in the `footer` prop with
+   `fontVariantNumeric: "tabular-nums"`.
+5. **Start from the closest template** — the family table in §5 maps every
+   existing demo to a copyable pattern (stepping machines, draggable
+   constructions, rAF-animated sims, …).
+6. Add a Playwright spec in `frontend/tests/lesson-render.spec.ts`. House
+   conventions, learned the hard way:
+   - Assert **deterministic** outcomes (exact values from fixed presets),
+     never randomized ones — for random sims assert counts/totals only.
+   - Beware strict-mode violations: lesson prose and KaTeX annotations often
+     contain the same text as the demo (`gcd(252, 105) = 21` appears in
+     both). Anchor on unique demo-footer phrasing, or use roles
+     (`getByRole("switch", …)`, buttons with `exact: true`).
+   - Collect `pageerror` events and assert the array is empty at the end.
+7. Verify: `npm run dev`, view a lesson using it, check light AND dark mode
    (OS-level toggle), then `npm run build` to catch type errors.
 
 ### 7.4 Create a server-computed demo (full-stack)
@@ -526,20 +607,21 @@ importing it, so the suite is fully self-contained. What lives where:
 | `test_ml_math.py` | The calculus: backprop vs finite differences, descent stability threshold, momentum superiority, dataset sanity |
 | `test_ml_api.py` | ML endpoints over HTTP: shapes, behavior, input bounds |
 | `test_auth.py` | Cookie flags, revocation, expiry, bcrypt storage |
-| `test_lessons.py` | CRUD, slug uniqueness, seeding, 404s |
+| `test_lessons.py` | CRUD, slug uniqueness, 404s, and the seed sync: recreation of missing lessons, hand-edit protection, marker preservation, topic-title restoration |
 | `test_migrations.py` | Migrations build a schema matching the models (drift = CI failure), and downgrade cleanly |
 
 ### Frontend E2E (Playwright — needs the full stack running)
 
 ```bash
 cd frontend && npm run test:e2e
-# against production:
-E2E_BASE_URL=https://<site> ADMIN_PASSWORD=<prod pw> npm run test:e2e
+# against production (the prod password is in Railway → backend → Variables):
+E2E_BASE_URL=https://nablanotes.vercel.app ADMIN_PASSWORD=<prod pw> npm run test:e2e
 ```
 
 The admin spec creates and then deletes its own throwaway lesson, so it
 leaves the database clean — but it does log in, so run it against databases
-you own.
+you own. Every lesson-with-demo has its own spec in
+`tests/lesson-render.spec.ts`; add one per new demo (conventions in §7.3).
 
 ### CI
 
@@ -629,6 +711,11 @@ dashboard → backend → Deployments → redeploy a previous build.
 | `alembic` says "Target database is not up to date" | DB has unapplied migrations | `.venv/bin/alembic upgrade head` |
 | Prod site broken right after deploy | Env var missing/stale, or backend still booting | `railway logs`; hit `/api/health`; remember Vercel env changes need a redeploy |
 | Vercel URL redirects to an SSO page | Deployment protection re-enabled (new project or setting change) | Vercel dashboard → Settings → Deployment Protection → disable |
+| Seed file edits don't appear after sync/deploy | The lesson is marked hand-edited (`updated_at ≠ created_at`) — check via `GET /api/lessons/<slug>` | Reset the marker: `UPDATE lessons SET updated_at = created_at WHERE slug = '…'`, then re-sync |
+| New topic shows under "More" on the home page | Its slug isn't assigned to a group | Add the slug to `GROUPS` in `frontend/src/app/page.tsx` |
+| Playwright: "strict mode violation … resolved to N elements" | The asserted text also appears in lesson prose or a KaTeX annotation | Anchor on unique demo-footer text, or use role-based locators (see §7.3) |
+| Code block renders plain, no colors | Fence isn't tagged, or language isn't registered | Use ```` ```python ```` — only Python is registered in `Markdown.tsx` |
+| Demo works locally, prod lesson lacks it | Frontend deployed but backend (seed content) wasn't, or vice versa | Deploy both: `railway up` carries lesson content, `vercel --prod` carries components |
 
 ---
 
