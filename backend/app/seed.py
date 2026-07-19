@@ -61,6 +61,11 @@ TOPICS = [
                 "title": "Softmax and Cross-Entropy",
                 "summary": "How networks turn scores into probabilities over many classes, why cross-entropy is the right loss, and the clean gradient that pairs them.",
             },
+            {
+                "slug": "neural-network-game",
+                "title": "The Neural Network Game",
+                "summary": "Be the optimizer: hand-tune a real network's weights against par on three levels, then watch gradient descent win — and feel why it has the job.",
+            },
         ],
     },
     {

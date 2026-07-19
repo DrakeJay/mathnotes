@@ -307,3 +307,36 @@ test("about page introduces Drake with GitHub and LinkedIn links", async ({ page
     "https://linkedin.com/in/drakeweller222",
   );
 });
+
+test("network game: a nudge lowers the loss, gradient descent beats par", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/neural-network-game");
+  await expect(
+    page.getByRole("heading", { name: "The Neural Network Game", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("Beat par: train a network by hand")).toBeVisible();
+
+  // Level 1 always starts from the same weights, so the loss is deterministic.
+  const loss = page.getByLabel("current loss");
+  await expect(loss).toHaveText(/1\.396/);
+
+  await page.getByRole("button", { name: "Nudge downhill" }).click();
+  await expect(page.getByLabel("gradient steps")).toHaveText(/gradient steps 1/);
+  const after = parseFloat((await loss.textContent())!.replace(/[^0-9.]/g, ""));
+  expect(after).toBeLessThan(1.396);
+
+  // The machine plays 400 animated steps and lands well under par.
+  await page.getByRole("button", { name: "Let gradient descent play" }).click();
+  await expect(page.getByText("Solved!")).toBeVisible({ timeout: 15_000 });
+
+  // Level 2 is XOR: fresh deterministic weights, nine coupled sliders.
+  await page.getByRole("button", { name: "2 · XOR" }).click();
+  await expect(loss).toHaveText(/0\.688/);
+  await expect(page.getByRole("slider")).toHaveCount(9);
+
+  expect(pageErrors).toEqual([]);
+});

@@ -315,6 +315,7 @@ its kind):
 | Toggled visualizers | `logic-gates`, `fibonacci` | `LogicGatesDemo` |
 | Random simulators | `coin-flips`, `galton-board` | `CoinFlipsDemo` |
 | Animated physics (requestAnimationFrame) | `projectile-sim`, `orbit-sim` | `OrbitDemo` |
+| Playable games (levels, par, win state) | `network-game` | `NetworkGameDemo` |
 | Static diagrams | `attention-pipeline`, `transformer-architecture` | `AttentionPipelineDiagram` |
 
 ### Charts and color (components/viz/)

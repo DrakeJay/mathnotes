@@ -20,6 +20,7 @@ import TransformerArchitectureDiagram from "./TransformerArchitectureDiagram";
 import LinearTransformDemo from "./LinearTransformDemo";
 import LogicGatesDemo from "./LogicGatesDemo";
 import MomentumDemo from "./MomentumDemo";
+import NetworkGameDemo from "./NetworkGameDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
 import OrbitDemo from "./OrbitDemo";
 import ProjectileDemo from "./ProjectileDemo";
@@ -36,6 +37,7 @@ export const DEMO_NAMES = [
   "gradient-descent",
   "momentum",
   "neural-network",
+  "network-game",
   "vanishing-gradients",
   "softmax",
   "attention",
@@ -66,6 +68,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "gradient-descent": GradientDescentDemo,
   momentum: MomentumDemo,
   "neural-network": NeuralNetworkDemo,
+  "network-game": NetworkGameDemo,
   "vanishing-gradients": VanishingGradientsDemo,
   softmax: SoftmaxDemo,
   attention: AttentionDemo,

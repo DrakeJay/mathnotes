@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(19 lessons across 12 topics).
+(20 lessons across 12 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -94,6 +94,7 @@ Available demos:
 | `descriptive-stats` | Draggable dot plot: mean vs. median, variance as areas | browser |
 | `projectile-sim` | Animated projectile flight with real air drag | browser |
 | `orbit-sim` | Naive vs. symplectic Euler: watch energy drift spiral an orbit | browser |
+| `network-game` | Hand-tune a real network's weights against par, then let gradient descent win | browser |
 | `gradient-descent` | Descent paths on bowl/saddle/Rosenbrock surfaces | **server (NumPy)** |
 | `momentum` | Plain descent vs. momentum, same start and η | **server (NumPy)** |
 | `neural-network` | An MLP trained with backprop on toy 2D datasets | **server (NumPy)** |
