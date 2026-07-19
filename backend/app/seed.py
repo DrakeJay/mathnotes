@@ -200,6 +200,19 @@ TOPICS = [
             },
         ],
     },
+    {
+        "slug": "physics",
+        "title": "Physics",
+        "description": "Nature's laws, simulated — and the numerical methods that keep them honest.",
+        "position": 12,
+        "lessons": [
+            {
+                "slug": "simulating-motion",
+                "title": "Simulating Motion",
+                "summary": "F = ma as a differential equation, Euler integration in four lines, projectiles with real air drag — and the two-line fix that keeps simulated planets in orbit.",
+            },
+        ],
+    },
 ]
 
 

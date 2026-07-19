@@ -257,6 +257,26 @@ test("statistics demo: the billionaire pulls the mean but not the median", async
   expect(pageErrors).toEqual([]);
 });
 
+test("physics lesson: projectile matches the formula, orbit reports energy", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/simulating-motion");
+  await expect(page.getByRole("heading", { name: "Simulating Motion", level: 1 })).toBeVisible();
+  // Default launch: v0 = 25 m/s at 45 degrees, no drag -> range 63.8 m.
+  await expect(page.getByText(/analytic no-drag range v₀²sin2θ\/g = 63\.8 m/)).toBeVisible({
+    timeout: 10_000,
+  });
+  await expect(page.getByText(/range 63\.[0-9] m/)).toBeVisible({ timeout: 10_000 });
+
+  // The orbit sim runs and reports energy; switch integrators.
+  await expect(page.getByText(/specific energy E =/)).toBeVisible();
+  await page.locator("select").last().selectOption("symplectic");
+  await expect(page.getByText(/the orbit stays closed/)).toBeVisible({ timeout: 10_000 });
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("home page groups the curriculum and showcases projects", async ({ page }) => {
   await page.goto("/");
   await expect(

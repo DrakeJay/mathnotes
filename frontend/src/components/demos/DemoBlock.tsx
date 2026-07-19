@@ -21,6 +21,8 @@ import LinearTransformDemo from "./LinearTransformDemo";
 import LogicGatesDemo from "./LogicGatesDemo";
 import MomentumDemo from "./MomentumDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
+import OrbitDemo from "./OrbitDemo";
+import ProjectileDemo from "./ProjectileDemo";
 import SoftmaxDemo from "./SoftmaxDemo";
 import StackMachineDemo from "./StackMachineDemo";
 import TangentLineDemo from "./TangentLineDemo";
@@ -52,6 +54,8 @@ export const DEMO_NAMES = [
   "coin-flips",
   "galton-board",
   "descriptive-stats",
+  "projectile-sim",
+  "orbit-sim",
 ] as const;
 
 const DEMOS: Record<string, React.ComponentType> = {
@@ -80,6 +84,8 @@ const DEMOS: Record<string, React.ComponentType> = {
   "coin-flips": CoinFlipsDemo,
   "galton-board": GaltonBoardDemo,
   "descriptive-stats": DescriptiveStatsDemo,
+  "projectile-sim": ProjectileDemo,
+  "orbit-sim": OrbitDemo,
 };
 
 export default function DemoBlock({

@@ -24,6 +24,12 @@ const GROUPS: { id: string; title: string; blurb: string; slugs: string[] }[] = 
     blurb: "Geometry, numbers, chance, and data.",
     slugs: ["geometry", "number-theory", "probability", "statistics"],
   },
+  {
+    id: "physics",
+    title: "Physics",
+    blurb: "Nature's laws, simulated — and the numerics that keep them honest.",
+    slugs: ["physics"],
+  },
 ];
 
 export default async function Home() {
