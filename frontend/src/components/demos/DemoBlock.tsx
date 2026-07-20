@@ -27,6 +27,7 @@ import NeuralNetworkDemo from "./NeuralNetworkDemo";
 import OrbitDemo from "./OrbitDemo";
 import ProjectileDemo from "./ProjectileDemo";
 import SoftmaxDemo from "./SoftmaxDemo";
+import SortingRaceDemo from "./SortingRaceDemo";
 import StackMachineDemo from "./StackMachineDemo";
 import TangentLineDemo from "./TangentLineDemo";
 import TurtlePlaygroundDemo from "./TurtlePlaygroundDemo";
@@ -58,6 +59,7 @@ export const DEMO_NAMES = [
   "logic-gates",
   "euclidean",
   "binary-search",
+  "sorting-race",
   "fibonacci",
   "coin-flips",
   "galton-board",
@@ -92,6 +94,7 @@ const DEMOS: Record<string, React.ComponentType> = {
   "logic-gates": LogicGatesDemo,
   euclidean: EuclideanDemo,
   "binary-search": BinarySearchDemo,
+  "sorting-race": SortingRaceDemo,
   fibonacci: FibonacciDemo,
   "coin-flips": CoinFlipsDemo,
   "galton-board": GaltonBoardDemo,

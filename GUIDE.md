@@ -314,6 +314,7 @@ its kind):
 | Steppable machines (tape/Step/Run/Reset) | `finite-automata`, `stack-machine`, `call-stack`, `euclidean`, `binary-search` | `FiniteAutomataDemo` |
 | Toggled visualizers | `logic-gates`, `fibonacci` | `LogicGatesDemo` |
 | Random simulators | `coin-flips`, `galton-board` | `CoinFlipsDemo` |
+| Trace replayers (precomputed op list, animated) | `sorting-race` | `SortingRaceDemo` |
 | Animated physics (requestAnimationFrame) | `projectile-sim`, `orbit-sim` | `OrbitDemo` |
 | Playable games (levels, par, win state) | `network-game` | `NetworkGameDemo` |
 | Freehand drawing (pointer capture on SVG) | `derivative-grapher` | `DerivativeGrapherDemo` |

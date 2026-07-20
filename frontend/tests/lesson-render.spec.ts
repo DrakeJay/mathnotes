@@ -411,3 +411,41 @@ test("turtle lesson: the playground walks programs, l-systems rewrite and grow",
 
   expect(pageErrors).toEqual([]);
 });
+
+test("sorting race: three starting orders crown three different winners", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/sorting-algorithms");
+  await expect(
+    page.getByRole("heading", { name: "Sorting Algorithms", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("Four sorts race on the same array")).toBeVisible();
+
+  // One manual step advances every algorithm by exactly one operation.
+  await page.getByRole("button", { name: "Step", exact: true }).click();
+  await expect(page.getByLabel("Bubble sort progress")).toHaveText(/^1 \//);
+  await expect(page.getByLabel("Quicksort progress")).toHaveText(/^1 \//);
+
+  // Shuffled: quicksort wins (238 ops on this seed), bubble sort trails.
+  await page.getByRole("button", { name: "Race", exact: true }).click();
+  await expect(page.getByText("✓ sorted")).toHaveCount(4, { timeout: 30_000 });
+  await expect(page.getByLabel("race result")).toHaveText(/fastest here: Quicksort \(238 ops\)/);
+  await expect(page.getByLabel("race result")).toHaveText(/slowest: Bubble sort \(807 ops\)/);
+
+  // Nearly sorted: adaptive insertion sort wins in a few dozen ops.
+  await page.getByLabel("starting order").selectOption("nearly");
+  await page.getByRole("button", { name: "Race", exact: true }).click();
+  await expect(page.getByText("✓ sorted")).toHaveCount(4, { timeout: 30_000 });
+  await expect(page.getByLabel("race result")).toHaveText(/fastest here: Insertion sort \(47 ops\)/);
+
+  // Reversed: last-element pivots wreck quicksort; merge sort cruises.
+  await page.getByLabel("starting order").selectOption("reversed");
+  await page.getByRole("button", { name: "Race", exact: true }).click();
+  await expect(page.getByText("✓ sorted")).toHaveCount(4, { timeout: 30_000 });
+  await expect(page.getByLabel("race result")).toHaveText(/fastest here: Merge sort \(240 ops\)/);
+
+  expect(pageErrors).toEqual([]);
+});

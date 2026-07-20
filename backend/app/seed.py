@@ -182,6 +182,11 @@ TOPICS = [
                 "title": "Search Algorithms",
                 "summary": "Linear vs. binary search: why sorted data turns O(n) into O(log n), the invariant that keeps binary search honest, and why the logarithm can't be beaten.",
             },
+            {
+                "slug": "sorting-algorithms",
+                "title": "Sorting Algorithms",
+                "summary": "Bubble, insertion, merge, and quicksort race on the same array — three starting orders, three different winners — plus the counting argument that makes n log n the floor.",
+            },
         ],
     },
     {

@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(22 lessons across 13 topics).
+(23 lessons across 13 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -91,6 +91,7 @@ Available demos:
 | `logic-gates` | Flippable circuits: gate explorer, XOR from NANDs, adders | browser |
 | `euclidean` | gcd as squares tiling a rectangle, with Bézout at the end | browser |
 | `binary-search` | Linear vs. binary search racing on the same sorted array | browser |
+| `sorting-race` | Bubble, insertion, merge, and quicksort race on one array | browser |
 | `fibonacci` | The naive recursion tree vs. memoization, plus ratios → φ | browser |
 | `coin-flips` | Law of large numbers: the running proportion pins onto p | browser |
 | `galton-board` | Balls through pegs assemble the binomial / bell curve | browser |
