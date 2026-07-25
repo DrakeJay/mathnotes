@@ -315,6 +315,7 @@ its kind):
 | Toggled visualizers | `logic-gates`, `fibonacci` | `LogicGatesDemo` |
 | Random simulators | `coin-flips`, `galton-board` | `CoinFlipsDemo` |
 | Trace replayers (precomputed op list, animated) | `sorting-race` | `SortingRaceDemo` |
+| Clocked state machines (reducer + Run/Step/rAF loop) | `cpu-simulator`, `cache` | `CpuSimulatorDemo` |
 | Animated physics (requestAnimationFrame) | `projectile-sim`, `orbit-sim` | `OrbitDemo` |
 | Playable games (levels, par, win state) | `network-game` | `NetworkGameDemo` |
 | Freehand drawing (pointer capture on SVG) | `derivative-grapher` | `DerivativeGrapherDemo` |

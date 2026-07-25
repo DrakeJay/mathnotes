@@ -449,3 +449,63 @@ test("sorting race: three starting orders crown three different winners", async 
 
   expect(pageErrors).toEqual([]);
 });
+
+test("cpu simulator: runs the program to HALT with the right result", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/cpu-fetch-decode-execute");
+  await expect(
+    page.getByRole("heading", { name: "The CPU: Fetch, Decode, Execute", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("A CPU running a program, one stage at a time")).toBeVisible();
+
+  // One step performs the fetch; the highlighted stage matches the narration.
+  await page.getByRole("button", { name: "Step", exact: true }).click();
+  await expect(page.getByLabel("active stage")).toHaveText("Fetch");
+  await expect(page.getByLabel("narration")).toContainText("Fetch");
+
+  // Run to completion: the machine halts and cell 15 holds 5+4+3+2+1 = 15.
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(page.getByLabel("machine state")).toHaveText("Halted", { timeout: 30_000 });
+  await expect(page.getByLabel("result")).toContainText("memory[15] = 15");
+  await expect(page.getByLabel("result")).toContainText("19 instructions");
+
+  expect(pageErrors).toEqual([]);
+});
+
+test("cache demo: locality swings the hit rate across access patterns", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/memory-hierarchy");
+  await expect(
+    page.getByRole("heading", { name: "The Memory Hierarchy and Caching", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("Why cache exists: locality, live")).toBeVisible();
+
+  const hitRate = page.getByLabel("hit rate");
+
+  // Sequential scan: spatial locality gives exactly 75% (16 misses of 64).
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(page.getByLabel("accesses")).toContainText("64 / 64", { timeout: 30_000 });
+  await expect(hitRate).toContainText("75.0%");
+
+  // Looping over a small array: temporal locality pushes it to ~94%.
+  await page.getByLabel("access pattern").selectOption("looping");
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(page.getByLabel("accesses")).toContainText("64 / 64", { timeout: 30_000 });
+  await expect(hitRate).toContainText("93.8%");
+
+  // Random access destroys locality: barely a third hit.
+  await page.getByLabel("access pattern").selectOption("random");
+  await page.getByRole("button", { name: "Run", exact: true }).click();
+  await expect(page.getByLabel("accesses")).toContainText("64 / 64", { timeout: 30_000 });
+  await expect(hitRate).toContainText("35.9%");
+
+  expect(pageErrors).toEqual([]);
+});

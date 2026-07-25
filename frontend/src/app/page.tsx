@@ -15,8 +15,8 @@ const GROUPS: { id: string; title: string; blurb: string; slugs: string[] }[] = 
   {
     id: "computing",
     title: "Computing",
-    blurb: "Machines, memory, logic gates, and the algorithms they run.",
-    slugs: ["computation", "systems", "logic", "algorithms"],
+    blurb: "Machines, memory, logic gates, processors, and the algorithms they run.",
+    slugs: ["computation", "systems", "logic", "computer-architecture", "algorithms"],
   },
   {
     id: "mathematics",

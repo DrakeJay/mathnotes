@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(23 lessons across 13 topics).
+(25 lessons across 14 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -89,6 +89,8 @@ Available demos:
 | `l-systems` | Rewriting rules grow the Koch snowflake, dragon curve, and a plant | browser |
 | `call-stack` | Recursion as stack frames in RAM, incl. a live stack overflow | browser |
 | `logic-gates` | Flippable circuits: gate explorer, XOR from NANDs, adders | browser |
+| `cpu-simulator` | Single-step a CPU through fetch–decode–execute on a real program | browser |
+| `cache` | Direct-mapped cache: watch locality swing the hit rate and latency | browser |
 | `euclidean` | gcd as squares tiling a rectangle, with Bézout at the end | browser |
 | `binary-search` | Linear vs. binary search racing on the same sorted array | browser |
 | `sorting-race` | Bubble, insertion, merge, and quicksort race on one array | browser |

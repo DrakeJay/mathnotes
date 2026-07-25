@@ -4,8 +4,10 @@ import ActivationFunctionsDemo from "./ActivationFunctionsDemo";
 import AttentionDemo from "./AttentionDemo";
 import AttentionPipelineDiagram from "./AttentionPipelineDiagram";
 import BinarySearchDemo from "./BinarySearchDemo";
+import CacheDemo from "./CacheDemo";
 import CallStackDemo from "./CallStackDemo";
 import CoinFlipsDemo from "./CoinFlipsDemo";
+import CpuSimulatorDemo from "./CpuSimulatorDemo";
 import DerivativeGrapherDemo from "./DerivativeGrapherDemo";
 import DescriptiveStatsDemo from "./DescriptiveStatsDemo";
 import GaltonBoardDemo from "./GaltonBoardDemo";
@@ -57,6 +59,8 @@ export const DEMO_NAMES = [
   "stack-machine",
   "call-stack",
   "logic-gates",
+  "cpu-simulator",
+  "cache",
   "euclidean",
   "binary-search",
   "sorting-race",
@@ -92,6 +96,8 @@ const DEMOS: Record<string, React.ComponentType> = {
   "stack-machine": StackMachineDemo,
   "call-stack": CallStackDemo,
   "logic-gates": LogicGatesDemo,
+  "cpu-simulator": CpuSimulatorDemo,
+  cache: CacheDemo,
   euclidean: EuclideanDemo,
   "binary-search": BinarySearchDemo,
   "sorting-race": SortingRaceDemo,

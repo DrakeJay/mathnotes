@@ -154,10 +154,28 @@ TOPICS = [
         ],
     },
     {
+        "slug": "computer-architecture",
+        "title": "Computer Architecture",
+        "description": "How gates become a machine that runs programs — the processor and the memory that feeds it.",
+        "position": 8,
+        "lessons": [
+            {
+                "slug": "cpu-fetch-decode-execute",
+                "title": "The CPU: Fetch, Decode, Execute",
+                "summary": "Single-step a real processor through its cycle: registers, an ALU, a program counter, and a program that's just numbers in memory — with one conditional jump turning a calculator into a computer.",
+            },
+            {
+                "slug": "memory-hierarchy",
+                "title": "The Memory Hierarchy and Caching",
+                "summary": "Why memory is a pyramid from one-cycle registers to ten-million-cycle disks, how caches bet on locality to bridge it, and why the order you touch memory can matter more than how much work you do.",
+            },
+        ],
+    },
+    {
         "slug": "number-theory",
         "title": "Number Theory",
         "description": "Divisibility, remainders, and the ancient algorithms behind modern cryptography.",
-        "position": 8,
+        "position": 9,
         "lessons": [
             {
                 "slug": "euclidean-algorithm",
@@ -175,7 +193,7 @@ TOPICS = [
         "slug": "algorithms",
         "title": "Algorithms",
         "description": "Recipes for computing — searching, sorting, and the analysis that separates fast from slow.",
-        "position": 9,
+        "position": 10,
         "lessons": [
             {
                 "slug": "search-algorithms",
@@ -193,7 +211,7 @@ TOPICS = [
         "slug": "probability",
         "title": "Probability",
         "description": "Reasoning about uncertainty — from coin flips to the bell curve.",
-        "position": 10,
+        "position": 11,
         "lessons": [
             {
                 "slug": "probability",
@@ -206,7 +224,7 @@ TOPICS = [
         "slug": "statistics",
         "title": "Statistics",
         "description": "Making sense of data — summarizing, estimating, and knowing when a signal is real.",
-        "position": 11,
+        "position": 12,
         "lessons": [
             {
                 "slug": "descriptive-statistics",
@@ -219,7 +237,7 @@ TOPICS = [
         "slug": "calculus",
         "title": "Calculus",
         "description": "Change made precise — slopes, limits, and the machinery of smooth functions.",
-        "position": 13,
+        "position": 14,
         "lessons": [
             {
                 "slug": "seeing-the-derivative",
@@ -232,7 +250,7 @@ TOPICS = [
         "slug": "physics",
         "title": "Physics",
         "description": "Nature's laws, simulated — and the numerical methods that keep them honest.",
-        "position": 12,
+        "position": 13,
         "lessons": [
             {
                 "slug": "simulating-motion",
