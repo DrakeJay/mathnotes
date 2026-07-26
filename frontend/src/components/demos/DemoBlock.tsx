@@ -7,6 +7,7 @@ import BinarySearchDemo from "./BinarySearchDemo";
 import CacheDemo from "./CacheDemo";
 import CallStackDemo from "./CallStackDemo";
 import CoinFlipsDemo from "./CoinFlipsDemo";
+import ContextSwitchDemo from "./ContextSwitchDemo";
 import CpuSimulatorDemo from "./CpuSimulatorDemo";
 import DerivativeGrapherDemo from "./DerivativeGrapherDemo";
 import DescriptiveStatsDemo from "./DescriptiveStatsDemo";
@@ -28,6 +29,7 @@ import NetworkGameDemo from "./NetworkGameDemo";
 import NeuralNetworkDemo from "./NeuralNetworkDemo";
 import OrbitDemo from "./OrbitDemo";
 import ProjectileDemo from "./ProjectileDemo";
+import SchedulerDemo from "./SchedulerDemo";
 import SoftmaxDemo from "./SoftmaxDemo";
 import SortingRaceDemo from "./SortingRaceDemo";
 import StackMachineDemo from "./StackMachineDemo";
@@ -61,6 +63,8 @@ export const DEMO_NAMES = [
   "logic-gates",
   "cpu-simulator",
   "cache",
+  "context-switch",
+  "scheduler",
   "euclidean",
   "binary-search",
   "sorting-race",
@@ -98,6 +102,8 @@ const DEMOS: Record<string, React.ComponentType> = {
   "logic-gates": LogicGatesDemo,
   "cpu-simulator": CpuSimulatorDemo,
   cache: CacheDemo,
+  "context-switch": ContextSwitchDemo,
+  scheduler: SchedulerDemo,
   euclidean: EuclideanDemo,
   "binary-search": BinarySearchDemo,
   "sorting-race": SortingRaceDemo,

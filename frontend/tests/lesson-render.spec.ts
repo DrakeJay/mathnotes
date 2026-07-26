@@ -509,3 +509,75 @@ test("cache demo: locality swings the hit rate across access patterns", async ({
 
   expect(pageErrors).toEqual([]);
 });
+
+test("context switch demo: registers move between the CPU and the PCBs", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/context-switching");
+  await expect(
+    page.getByRole("heading", { name: "Context Switching", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText("One context switch, stage by stage")).toBeVisible();
+
+  const step = page.getByRole("button", { name: "Step", exact: true });
+  await expect(page.getByLabel("mode")).toHaveText("user mode");
+  await expect(page.getByLabel("cpu registers")).toContainText("1024");
+
+  // Run the slice, then the timer interrupt drops the CPU into kernel mode.
+  await step.click();
+  await expect(page.getByLabel("cpu registers")).toContainText("1034");
+  await step.click();
+  await expect(page.getByLabel("mode")).toHaveText("kernel mode");
+
+  // Save copies the live registers into A's PCB; restore loads B's onto the CPU.
+  await step.click();
+  await expect(page.getByLabel("pcb A")).toContainText("1034");
+  await step.click(); // schedule
+  await step.click(); // address space — TLB flush leaves the caches cold
+  await expect(page.getByLabel("warmth")).toHaveAttribute("style", /width: 5%/);
+  await step.click(); // restore
+  await expect(page.getByLabel("cpu registers")).toContainText("2048");
+  await step.click(); // resume
+  await expect(page.getByLabel("mode")).toHaveText("user mode");
+  await expect(page.getByLabel("switch count")).toContainText("1");
+
+  expect(pageErrors).toEqual([]);
+});
+
+test("scheduler demo: the time slice trades responsiveness against overhead", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(String(err)));
+
+  await page.goto("/lessons/context-switching");
+  await expect(
+    page.getByText("One CPU, three processes, and the cost of switching between them"),
+  ).toBeVisible();
+
+  // Default: round robin, slice 2, switch cost 1.
+  await expect(page.getByLabel("cpu efficiency")).toHaveText("71.4%");
+  await expect(page.getByLabel("avg response")).toHaveText("2.0");
+  await expect(page.getByLabel("context switches")).toHaveText("8");
+
+  // A longer slice switches less and wastes less, but answers later.
+  await page.getByLabel("time slice").fill("6");
+  await expect(page.getByLabel("cpu efficiency")).toHaveText("87.0%");
+  await expect(page.getByLabel("avg response")).toHaveText("4.7");
+
+  // First come, first served barely switches — and makes the editor wait.
+  await page.getByLabel("scheduling policy").selectOption("fifo");
+  await expect(page.getByLabel("cpu efficiency")).toHaveText("90.9%");
+  await expect(page.getByLabel("avg response")).toHaveText("8.7");
+
+  // An expensive switch wrecks a short slice: more time switching than working.
+  await page.getByLabel("scheduling policy").selectOption("rr");
+  await page.getByLabel("time slice").fill("2");
+  await page.getByLabel("switch cost").fill("4");
+  await expect(page.getByLabel("cpu efficiency")).toHaveText("38.5%");
+
+  expect(pageErrors).toEqual([]);
+});

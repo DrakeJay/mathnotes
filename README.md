@@ -46,7 +46,7 @@ npm run dev
 ```
 
 On first boot the backend creates the tables and seeds the starter curriculum
-(25 lessons across 14 topics).
+(26 lessons across 15 topics).
 
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
@@ -91,6 +91,8 @@ Available demos:
 | `logic-gates` | Flippable circuits: gate explorer, XOR from NANDs, adders | browser |
 | `cpu-simulator` | Single-step a CPU through fetch–decode–execute on a real program | browser |
 | `cache` | Direct-mapped cache: watch locality swing the hit rate and latency | browser |
+| `context-switch` | Step one context switch: registers moving between CPU and PCBs | browser |
+| `scheduler` | Three processes on one CPU: policy, time slice, and switch overhead | browser |
 | `euclidean` | gcd as squares tiling a rectangle, with Bézout at the end | browser |
 | `binary-search` | Linear vs. binary search racing on the same sorted array | browser |
 | `sorting-race` | Bubble, insertion, merge, and quicksort race on one array | browser |

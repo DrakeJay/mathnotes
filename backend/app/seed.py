@@ -172,6 +172,19 @@ TOPICS = [
         ],
     },
     {
+        "slug": "operating-systems",
+        "title": "Operating Systems",
+        "description": "The program that runs the programs — sharing one processor among many.",
+        "position": 15,
+        "lessons": [
+            {
+                "slug": "context-switching",
+                "title": "Context Switching",
+                "summary": "How one CPU pretends to be many: a process as nothing but saved registers, the timer interrupt that preempts it, and the scheduler's trade between responsiveness and the overhead of switching.",
+            },
+        ],
+    },
+    {
         "slug": "number-theory",
         "title": "Number Theory",
         "description": "Divisibility, remainders, and the ancient algorithms behind modern cryptography.",
