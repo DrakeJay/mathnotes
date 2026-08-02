@@ -48,6 +48,10 @@ npm run dev
 On first boot the backend creates the tables and seeds the starter curriculum
 (26 lessons across 15 topics).
 
+**Themes:** the site follows your OS light/dark setting, and the header's
+**✦ 1999 mode** button swaps in a Hypnospace-flavored retro skin (tiled purple
+void, beveled everything, marquee, hit counter) that persists across visits.
+
 **Admin:** go to `/admin`, password `letmein` (change via `ADMIN_PASSWORD` —
 copy `backend/.env.example` to `backend/.env`). Anyone can read lessons;
 editing requires login. Auth is session-based: bcrypt-hashed passwords in a

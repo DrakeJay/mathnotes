@@ -586,6 +586,24 @@ wherever makes sense.
 - Prose styling comes from `@tailwindcss/typography` (`prose` classes on
   lesson pages).
 
+**The third theme (1999 mode).** Light/dark follow the OS; the Hypnospace-style
+retro skin is opt-in, toggled by the header button (`components/ThemeToggle.tsx`)
+which writes `mathnotes_theme` to localStorage and sets `data-theme="hypno"` on
+`<html>`. Everything else is CSS: the `:root[data-theme="hypno"]` block at the
+bottom of `globals.css` re-points the same tokens (so demos and charts follow
+along) and adds the era-appropriate chrome. Three things to keep in mind when
+editing it:
+
+- `lib/theme.ts` exports `THEME_SCRIPT`, inlined in `<head>` by `layout.tsx` so
+  the attribute is set before first paint — without it, hypno users get a flash
+  of the modern site on every navigation.
+- The hypno-only decorations (`components/HypnoChrome.tsx` — marquee, hit
+  counter, badges) are *always* rendered and hidden with CSS. Rendering them
+  conditionally on the client would be a hydration mismatch.
+- Lesson bodies carry `dark:prose-invert`, which keys off the OS, not the
+  theme. The hypno block pins both `--tw-prose-*` and `--tw-prose-invert-*`, or
+  an OS-dark visitor gets near-white text on the cream panel.
+
 ### 7.9 Change the admin password
 
 - **Local:** copy `backend/.env.example` to `backend/.env`, set

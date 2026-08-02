@@ -73,15 +73,29 @@ export function diverging(t: number, mode: VizMode): string {
   return mix(divergingMid, red, Math.pow((0.5 - u) * 2, 0.85));
 }
 
-/** Tracks prefers-color-scheme so canvas-rendered layers match the CSS theme. */
+/** Tracks the active theme so canvas-rendered layers match the CSS. Normally
+ *  that's prefers-color-scheme; the 1999 theme (data-theme="hypno") draws its
+ *  panels on cream, so canvas layers stay in light mode there regardless. */
 export function useVizMode(): VizMode {
   const [mode, setMode] = useState<VizMode>("light");
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setMode(mq.matches ? "dark" : "light");
-    const onChange = (e: MediaQueryListEvent) => setMode(e.matches ? "dark" : "light");
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    const resolve = () =>
+      setMode(
+        document.documentElement.dataset.theme === "hypno"
+          ? "light"
+          : mq.matches
+            ? "dark"
+            : "light",
+      );
+    resolve();
+    mq.addEventListener("change", resolve);
+    const observer = new MutationObserver(resolve);
+    observer.observe(document.documentElement, { attributeFilter: ["data-theme"] });
+    return () => {
+      mq.removeEventListener("change", resolve);
+      observer.disconnect();
+    };
   }, []);
   return mode;
 }

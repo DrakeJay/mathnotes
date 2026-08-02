@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Comic_Neue, Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { HypnoFooter, HypnoMarquee } from "@/components/HypnoChrome";
+import ThemeToggle from "@/components/ThemeToggle";
+import { THEME_SCRIPT } from "@/lib/theme";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 
@@ -11,6 +14,13 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+/* The 1999 theme's typeface. Loaded always so toggling is instant. */
+const comic = Comic_Neue({
+  variable: "--font-comic",
+  weight: ["400", "700"],
   subsets: ["latin"],
 });
 
@@ -31,9 +41,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${comic.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col">
+        <HypnoMarquee />
         <header className="border-b border-hairline">
           <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
             <Link href="/" className="text-lg font-semibold tracking-tight">
@@ -49,6 +63,7 @@ export default function RootLayout({
               <Link href="/admin" className="hover:text-foreground">
                 Admin
               </Link>
+              <ThemeToggle />
             </nav>
           </div>
         </header>
@@ -58,6 +73,7 @@ export default function RootLayout({
             Built with Next.js, FastAPI, and PostgreSQL — the training demos
             run on real NumPy math, live on the server.
           </div>
+          <HypnoFooter />
         </footer>
       </body>
     </html>

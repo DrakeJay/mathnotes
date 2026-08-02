@@ -111,3 +111,330 @@ body {
 .hljs-operator {
   color: var(--ink-secondary);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1999 MODE — an opt-in Hypnospace-flavored takeover of the whole site.
+   Toggled by data-theme="hypno" on <html> (see lib/theme.ts). Everything
+   below is scoped to that attribute, so the modern theme is untouched.
+
+   Structure: the page itself becomes a tiled purple void, and each content
+   container becomes a cream "homepage" panel with a chunky bevel — which is
+   what keeps 4,000 words of lesson prose readable inside all the noise.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root[data-theme="hypno"] {
+  color-scheme: light;
+
+  --background: #2a0b4e;
+  --foreground: #180032;
+  --surface-card: #fffbe8;
+  --ink-secondary: #4a1c8c;
+  --ink-muted: #7040b8;
+  --hairline: rgba(43, 0, 82, 0.3);
+
+  /* Viz tokens: same hue families as the reference palette (so the charts
+     stay colorblind-distinguishable) with the saturation cranked. */
+  --viz-surface: #fffbe8;
+  --viz-grid: #e7d9ff;
+  --viz-axis: #a97fe0;
+  --series-blue: #1f3ce0;
+  --series-aqua: #00a06a;
+  --series-yellow: #ff9500;
+  --series-red: #ff1f6d;
+  --series-violet: #7b2ff7;
+  --status-critical: #ff1f6d;
+
+  --hypno-hot: #ff2fb9;
+  --hypno-cyan: #21e6ff;
+  --hypno-lime: #b6ff2f;
+  --hypno-deep: #180032;
+}
+
+:root[data-theme="hypno"] body {
+  font-family: var(--font-comic), "Comic Sans MS", "Chalkboard SE", cursive;
+  color: var(--foreground);
+  background-color: #2a0b4e;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(255, 47, 185, 0.45), transparent 55%),
+    radial-gradient(circle at 85% 15%, rgba(33, 230, 255, 0.35), transparent 50%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0 12px, transparent 12px 24px),
+    linear-gradient(160deg, #3d0f6b 0%, #1b0538 60%, #2a0b4e 100%);
+  background-attachment: fixed;
+}
+
+/* ── Content panels ─────────────────────────────────────────────────── */
+:root[data-theme="hypno"] main > * {
+  background: var(--surface-card);
+  border: 5px ridge var(--hypno-hot);
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.45);
+  margin-block: 1.75rem;
+}
+@media (min-width: 1100px) {
+  :root[data-theme="hypno"] main > * {
+    /* the bevel needs breathing room once the column stops touching the edge */
+    margin-inline: auto;
+  }
+}
+
+/* ── Header / footer bars ───────────────────────────────────────────── */
+:root[data-theme="hypno"] body > header,
+:root[data-theme="hypno"] body > footer {
+  border: none;
+  color: #fff;
+  background: linear-gradient(90deg, #ff2fb9, #7b2ff7 45%, #21e6ff);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="hypno"] body > header a,
+:root[data-theme="hypno"] body > footer div {
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
+}
+:root[data-theme="hypno"] body > header a:hover {
+  color: var(--hypno-lime);
+}
+:root[data-theme="hypno"] body > header a:first-child {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* ── Headings: the WordArt problem ──────────────────────────────────── */
+:root[data-theme="hypno"] main h1 {
+  font-weight: 700;
+  color: var(--hypno-hot);
+  letter-spacing: 0.01em;
+  text-shadow:
+    2px 2px 0 var(--hypno-cyan),
+    4px 4px 0 var(--hypno-deep);
+}
+/* Section headings get the classic colored title bar instead of a stacked
+   shadow — at h2 size the shadow smears, and these have to stay readable. */
+:root[data-theme="hypno"] main h2 {
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #7b2ff7, #ff2fb9);
+  border: 3px outset #ff8ad8;
+  padding: 0.12em 0.4em;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
+}
+:root[data-theme="hypno"] main h3,
+:root[data-theme="hypno"] main h4 {
+  color: #7b2ff7;
+}
+:root[data-theme="hypno"] .prose hr {
+  border-top-width: 5px;
+  border-top-style: solid;
+  border-image: repeating-linear-gradient(
+      90deg,
+      #ff2fb9 0 14px,
+      #ff9500 14px 28px,
+      #b6ff2f 28px 42px,
+      #21e6ff 42px 56px,
+      #7b2ff7 56px 70px
+    )
+    1;
+}
+
+/* ── Links: blue, underlined, and visited-purple, as nature intended ── */
+:root[data-theme="hypno"] .prose a {
+  color: #1f3ce0;
+  text-decoration: underline;
+  font-weight: 700;
+}
+:root[data-theme="hypno"] .prose a:visited {
+  color: #7b2ff7;
+}
+:root[data-theme="hypno"] .prose a:hover {
+  color: var(--hypno-hot);
+  background: var(--hypno-lime);
+}
+
+/* ── Controls: everything is a Windows 95 button ────────────────────── */
+:root[data-theme="hypno"] button,
+:root[data-theme="hypno"] select {
+  font-family: inherit;
+  font-weight: 700;
+  color: var(--hypno-deep);
+  background: linear-gradient(180deg, #fff 0%, #ded3f5 100%);
+  border: 3px outset #c9b4ee;
+  border-radius: 0;
+  box-shadow: none;
+}
+:root[data-theme="hypno"] button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #fff 0%, var(--hypno-lime) 100%);
+  opacity: 1;
+}
+:root[data-theme="hypno"] button:active:not(:disabled) {
+  border-style: inset;
+}
+:root[data-theme="hypno"] input[type="range"] {
+  accent-color: var(--hypno-hot);
+}
+:root[data-theme="hypno"] .hypno-toggle {
+  color: var(--hypno-deep);
+  border-color: var(--hypno-deep);
+}
+
+/* ── Demo cards and tables ──────────────────────────────────────────── */
+:root[data-theme="hypno"] section.not-prose {
+  background: #fff;
+  border: 4px ridge var(--hypno-cyan);
+  border-radius: 0;
+  box-shadow: 6px 6px 0 rgba(24, 0, 50, 0.25);
+}
+:root[data-theme="hypno"] .prose thead {
+  background: #efe4ff;
+}
+:root[data-theme="hypno"] .prose pre {
+  border: 3px inset #c9b4ee;
+  background: #fffdf2;
+}
+:root[data-theme="hypno"] .prose blockquote {
+  border-left-color: var(--hypno-hot);
+}
+
+/* ── The chrome that only exists here ───────────────────────────────── */
+.hypno-marquee,
+.hypno-footer {
+  display: none;
+}
+
+:root[data-theme="hypno"] .hypno-marquee {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--hypno-deep);
+  color: var(--hypno-lime);
+  border-bottom: 3px solid var(--hypno-hot);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 0;
+}
+.hypno-marquee-track {
+  display: inline-flex;
+  gap: 2rem;
+  animation: hypno-scroll 38s linear infinite;
+}
+@keyframes hypno-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+:root[data-theme="hypno"] .hypno-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
+}
+.hypno-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 2px outset #ffd84d;
+  background: linear-gradient(180deg, #ffe680, #ffb300);
+  color: var(--hypno-deep);
+  text-shadow: none;
+  transform: rotate(-2deg);
+}
+.hypno-counter {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.hypno-digit {
+  background: #000;
+  color: var(--hypno-lime);
+  font-family: var(--font-geist-mono), monospace;
+  padding: 1px 3px;
+  border: 1px solid #4a4a4a;
+  text-shadow: 0 0 6px var(--hypno-lime);
+}
+.hypno-blink {
+  animation: hypno-blink 1.1s steps(2, end) infinite;
+}
+@keyframes hypno-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hypno-marquee-track,
+  .hypno-blink {
+    animation: none;
+  }
+}
+
+/* ── Home-page lesson cards ─────────────────────────────────────────── */
+:root[data-theme="hypno"] main a.group {
+  border: 3px outset #d9c2ff;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: 4px 4px 0 rgba(24, 0, 50, 0.2);
+}
+:root[data-theme="hypno"] main a.group:hover {
+  border-color: var(--hypno-lime);
+  background: #fdfff0;
+}
+:root[data-theme="hypno"] main a.group h3 {
+  color: #1f3ce0;
+  text-decoration: underline;
+}
+
+/* The lesson body carries `dark:prose-invert`, which keys off the OS setting —
+   in 1999 mode the panels are cream whatever the OS says, so pin the typography
+   plugin's ink to this theme's palette in both its normal and inverted sets. */
+:root[data-theme="hypno"] .prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: #7b2ff7;
+  --tw-prose-lead: var(--ink-secondary);
+  --tw-prose-links: #1f3ce0;
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: #7040b8;
+  --tw-prose-bullets: var(--hypno-hot);
+  --tw-prose-hr: var(--hairline);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--hypno-hot);
+  --tw-prose-captions: var(--ink-muted);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-th-borders: var(--hairline);
+  --tw-prose-td-borders: var(--hairline);
+
+  --tw-prose-invert-body: var(--foreground);
+  --tw-prose-invert-headings: #7b2ff7;
+  --tw-prose-invert-lead: var(--ink-secondary);
+  --tw-prose-invert-links: #1f3ce0;
+  --tw-prose-invert-bold: var(--foreground);
+  --tw-prose-invert-counters: #7040b8;
+  --tw-prose-invert-bullets: var(--hypno-hot);
+  --tw-prose-invert-hr: var(--hairline);
+  --tw-prose-invert-quotes: var(--foreground);
+  --tw-prose-invert-quote-borders: var(--hypno-hot);
+  --tw-prose-invert-captions: var(--ink-muted);
+  --tw-prose-invert-code: var(--foreground);
+  --tw-prose-invert-th-borders: var(--hairline);
+  --tw-prose-invert-td-borders: var(--hairline);
+}
+
+/* Text fields: `bg-background` is the purple void in this theme, so inputs
+   would otherwise be dark-on-dark. Sink them into the panel instead. */
+:root[data-theme="hypno"] input:not([type="range"]):not([type="checkbox"]),
+:root[data-theme="hypno"] textarea {
+  background: #fff;
+  color: var(--hypno-deep);
+  border: 3px inset #c9b4ee;
+  border-radius: 0;
+}
+:root[data-theme="hypno"] input::placeholder,
+:root[data-theme="hypno"] textarea::placeholder {
+  color: #8b6fc0;
+}
